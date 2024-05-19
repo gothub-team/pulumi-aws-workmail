@@ -25,7 +25,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	awsWorkmail "github.com/gothub-team/pulumi-awsworkmail/provider"
+	awsworkmail "github.com/gothub-team/pulumi-awsworkmail/provider"
 )
 
 func TestRandomCreate(t *testing.T) {
@@ -52,5 +52,5 @@ func urn(typ string) resource.URN {
 
 // Create a test server.
 func provider() integration.Server {
-	return integration.NewServer(awsWorkmail.Name, semver.MustParse("1.0.0"), awsWorkmail.Provider())
+	return integration.NewServer(awsworkmail.Name, semver.MustParse("1.0.0"), awsworkmail.Provider())
 }

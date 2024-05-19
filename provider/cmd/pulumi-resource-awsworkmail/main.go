@@ -17,8 +17,8 @@ package main
 import (
 	p "github.com/pulumi/pulumi-go-provider"
 
-	awsWorkmail "github.com/gothub-team/pulumi-awsworkmail/provider"
+	awsworkmail "github.com/gothub-team/pulumi-awsworkmail/provider"
 )
 
 // Serve the provider against Pulumi's Provider protocol.
-func main() { p.RunProvider(awsWorkmail.Name, awsWorkmail.Version, awsWorkmail.Provider()) }
+func main() { p.RunProvider(awsworkmail.Name, awsworkmail.Version, awsworkmail.Provider()) }

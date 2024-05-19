@@ -1,2 +1,2 @@
-// Package awsworkmail exports types, functions, subpackages for provisioning awsworkmail resources.
+// Provider to fill missing awsworkmail resources
 package awsworkmail

@@ -20,6 +20,7 @@ def readme():
 setup(name='pulumi_awsworkmail',
       python_requires='>=3.8',
       version=VERSION,
+      description="Provider to fill missing awsworkmail resources",
       long_description=readme(),
       long_description_content_type='text/markdown',
       packages=find_packages(),

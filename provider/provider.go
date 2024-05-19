@@ -20,6 +20,8 @@ import (
 
 	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
+	"github.com/pulumi/pulumi-go-provider/middleware/schema"
+	gen "github.com/pulumi/pulumi/pkg/v3/codegen/go"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
 )
 
@@ -37,6 +39,16 @@ func Provider() p.Provider {
 		},
 		ModuleMap: map[tokens.ModuleName]tokens.ModuleName{
 			"provider": "index",
+		},
+		Metadata: schema.Metadata{
+			DisplayName: "awsworkmail",
+			Description: "Provider to fill missing awsworkmail resources",
+			LanguageMap: map[string]any{
+				"go": gen.GoPackageInfo{
+					Generics:       gen.GenericsSettingGenericsOnly,
+					ImportBasePath: "github.com/gothub-team/pulumi-awsworkmail/sdk/go/awsworkmail",
+				},
+			},
 		},
 	})
 }
