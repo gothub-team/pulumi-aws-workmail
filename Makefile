@@ -1,10 +1,10 @@
-PROJECT_NAME := Pulumi Xyz Resource Provider
+PROJECT_NAME := Pulumi aws-workmail Resource Provider
 
-PACK             := xyz
+PACK             := aws-workmail
 PACKDIR          := sdk
-PROJECT          := github.com/pulumi/pulumi-xyz
-NODE_MODULE_NAME := @abc/xyz
-NUGET_PKG_NAME   := Abc.Xyz
+PROJECT          := github.com/gothub-team/pulumi-aws-workmail
+NODE_MODULE_NAME := @gothub-team/aws-workmail
+NUGET_PKG_NAME   := gothub-team.aws-workmail
 
 PROVIDER        := pulumi-resource-${PACK}
 VERSION         ?= $(shell pulumictl get version)

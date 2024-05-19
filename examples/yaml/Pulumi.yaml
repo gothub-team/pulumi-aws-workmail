@@ -1,13 +1,13 @@
-name: provider-xyz-native
+name: provider-aws-workmail-native
 runtime: yaml
 plugins:
   providers:
-    - name: xyz
+    - name: aws-workmail
       path: ../../bin
 
 resources:
   myRandomResource:
-    type: xyz:Random
+    type: aws-workmail:Random
     properties:
       length: 24
 

@@ -1,6 +1,6 @@
-name: provider-xyz-native
+name: provider-aws-workmail-native
 runtime: python
 plugins:
   providers:
-    - name: xyz
+    - name: aws-workmail
       path: ../../bin
