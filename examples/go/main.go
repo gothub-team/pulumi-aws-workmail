@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/gothub-team/pulumi-aws-workmail/sdk/go/aws-workmail"
+	"github.com/gothub-team/pulumi-awsworkmail/sdk/go/awsworkmail"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
-		myRandomResource, err := aws-workmail.NewRandom(ctx, "myRandomResource", &aws-workmail.RandomArgs{
+		myRandomResource, err := awsworkmail.NewRandom(ctx, "myRandomResource", &awsworkmail.RandomArgs{
 			Length: pulumi.Int(24),
 		})
 		if err != nil {

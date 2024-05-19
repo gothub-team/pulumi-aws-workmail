@@ -11,11 +11,11 @@ _utilities.register(
     resource_modules="""
 [
  {
-  "pkg": "xyz",
+  "pkg": "awsworkmail",
   "mod": "index",
-  "fqn": "pulumi_xyz",
+  "fqn": "pulumi_awsworkmail",
   "classes": {
-   "xyz:index:Random": "Random"
+   "awsworkmail:index:Random": "Random"
   }
  }
 ]
@@ -23,9 +23,9 @@ _utilities.register(
     resource_packages="""
 [
  {
-  "pkg": "xyz",
-  "token": "pulumi:providers:xyz",
-  "fqn": "pulumi_xyz",
+  "pkg": "awsworkmail",
+  "token": "pulumi:providers:awsworkmail",
+  "fqn": "pulumi_awsworkmail",
   "class": "Provider"
  }
 ]

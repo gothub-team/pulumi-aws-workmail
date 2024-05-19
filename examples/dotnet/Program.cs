@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Pulumi;
-using aws-workmail = Pulumi.aws-workmail;
+using awsworkmail = Pulumi.awsworkmail;
 
 return await Deployment.RunAsync(() => 
 {
-    var myRandomResource = new aws-workmail.Random("myRandomResource", new()
+    var myRandomResource = new awsworkmail.Random("myRandomResource", new()
     {
         Length = 24,
     });

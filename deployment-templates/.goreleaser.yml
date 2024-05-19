@@ -5,7 +5,7 @@ before:
   hooks:
     - make gen
 builds:
-  - binary: pulumi-resource-aws-workmail
+  - binary: pulumi-resource-awsworkmail
     dir: provider
     env:
       - CGO_ENABLED=0
@@ -18,8 +18,8 @@ builds:
       - linux
     ldflags:
       # The line below MUST align with the module in current provider/go.mod
-      - -X github.com/your-org-name/pulumi-aws-workmail/provider/Version={{.Tag }}
-    main: ./cmd/pulumi-resource-aws-workmail/
+      - -X github.com/your-org-name/pulumi-awsworkmail/provider/Version={{.Tag }}
+    main: ./cmd/pulumi-resource-awsworkmail/
 changelog:
   skip: true
 release:

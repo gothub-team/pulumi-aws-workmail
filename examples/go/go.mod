@@ -1,4 +1,4 @@
-module provider-aws-workmail-native
+module provider-awsworkmail-native
 
 go 1.20
 
