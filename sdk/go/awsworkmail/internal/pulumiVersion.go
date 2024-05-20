@@ -8,4 +8,4 @@ import (
 )
 
 var SdkVersion semver.Version = semver.Version{}
-var pluginDownloadURL string = ""
+var pluginDownloadURL string = "https://github.com/gothub-team/pulumi-awsworkmail/releases/download/" + SdkVersion.String() + "/"
