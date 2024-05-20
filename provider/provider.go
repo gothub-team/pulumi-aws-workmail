@@ -49,6 +49,7 @@ func Provider() p.Provider {
 					ImportBasePath: "github.com/gothub-team/pulumi-awsworkmail/sdk/go/awsworkmail",
 				},
 			},
+			PluginDownloadURL: "https://github.com/gothub-team/pulumi-awsworkmail/releases/download/" + Version + "/",
 		},
 	})
 }
