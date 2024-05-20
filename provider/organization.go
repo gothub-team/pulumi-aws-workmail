@@ -22,17 +22,17 @@ type Organization struct{}
 // Each resource has an input struct, defining what arguments it accepts.
 type OrganizationArgs struct {
 	// The organization alias.
-	Alias string
+	Alias string `pulumi:"alias"`
 	// The email domains to associate with the organization.
-	Domains []types.Domain
+	Domains []types.Domain `pulumi:"domains"`
 	// The idempotency token associated with the request.
-	ClientToken *string
+	ClientToken *string `pulumi:"clientToken"`
 	// The AWS Directory Service directory ID.
-	DirectoryId *string
+	DirectoryId *string `pulumi:"directoryId"`
 	// The Amazon Resource Name (ARN) of a customer managed key from AWS KMS.
-	KmsKeyArn *string
+	KmsKeyArn *string `pulumi:"kmsKeyArn"`
 	// When true , allows organization interoperability between WorkMail and Microsoft Exchange. If true , you must include a AD Connector directory ID in the request.
-	EnableInteroperability bool
+	EnableInteroperability bool `pulumi:"enableInteroperability"`
 }
 
 // Each resource has a state, describing the fields that exist on the created resource.
