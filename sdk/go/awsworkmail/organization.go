@@ -7,22 +7,49 @@ import (
 	"context"
 	"reflect"
 
+	"errors"
 	"github.com/gothub-team/pulumi-awsworkmail/sdk/go/awsworkmail/internal"
+	"github.com/gothub-team/pulumi-awsworkmail/sdk/go/awsworkmail/types"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 )
 
 type Organization struct {
 	pulumi.CustomResourceState
+
+	Alias                  pulumix.Output[string]                                 `pulumi:"alias"`
+	ClientToken            pulumix.Output[string]                                 `pulumi:"clientToken"`
+	DirectoryId            pulumix.Output[string]                                 `pulumi:"directoryId"`
+	Domains                pulumix.GArrayOutput[types.Domain, types.DomainOutput] `pulumi:"domains"`
+	EnableInteroperability pulumix.Output[bool]                                   `pulumi:"enableInteroperability"`
+	KmsKeyArn              pulumix.Output[string]                                 `pulumi:"kmsKeyArn"`
 }
 
 // NewOrganization registers a new resource with the given unique name, arguments, and options.
 func NewOrganization(ctx *pulumi.Context,
 	name string, args *OrganizationArgs, opts ...pulumi.ResourceOption) (*Organization, error) {
 	if args == nil {
-		args = &OrganizationArgs{}
+		return nil, errors.New("missing one or more required arguments")
 	}
 
+	if args.Alias == nil {
+		return nil, errors.New("invalid value for required argument 'Alias'")
+	}
+	if args.ClientToken == nil {
+		return nil, errors.New("invalid value for required argument 'ClientToken'")
+	}
+	if args.DirectoryId == nil {
+		return nil, errors.New("invalid value for required argument 'DirectoryId'")
+	}
+	if args.Domains == nil {
+		return nil, errors.New("invalid value for required argument 'Domains'")
+	}
+	if args.EnableInteroperability == nil {
+		return nil, errors.New("invalid value for required argument 'EnableInteroperability'")
+	}
+	if args.KmsKeyArn == nil {
+		return nil, errors.New("invalid value for required argument 'KmsKeyArn'")
+	}
 	opts = internal.PkgResourceDefaultOpts(opts)
 	var resource Organization
 	err := ctx.RegisterResource("awsworkmail:index:Organization", name, args, &resource, opts...)
@@ -56,10 +83,22 @@ func (OrganizationState) ElementType() reflect.Type {
 }
 
 type organizationArgs struct {
+	Alias                  string         `pulumi:"alias"`
+	ClientToken            string         `pulumi:"clientToken"`
+	DirectoryId            string         `pulumi:"directoryId"`
+	Domains                []types.Domain `pulumi:"domains"`
+	EnableInteroperability bool           `pulumi:"enableInteroperability"`
+	KmsKeyArn              string         `pulumi:"kmsKeyArn"`
 }
 
 // The set of arguments for constructing a Organization resource.
 type OrganizationArgs struct {
+	Alias                  pulumix.Input[string]
+	ClientToken            pulumix.Input[string]
+	DirectoryId            pulumix.Input[string]
+	Domains                pulumix.Input[[]*types.DomainArgs]
+	EnableInteroperability pulumix.Input[bool]
+	KmsKeyArn              pulumix.Input[string]
 }
 
 func (OrganizationArgs) ElementType() reflect.Type {
@@ -84,6 +123,37 @@ func (o OrganizationOutput) ToOutput(ctx context.Context) pulumix.Output[Organiz
 	return pulumix.Output[Organization]{
 		OutputState: o.OutputState,
 	}
+}
+
+func (o OrganizationOutput) Alias() pulumix.Output[string] {
+	value := pulumix.Apply[Organization](o, func(v Organization) pulumix.Output[string] { return v.Alias })
+	return pulumix.Flatten[string, pulumix.Output[string]](value)
+}
+
+func (o OrganizationOutput) ClientToken() pulumix.Output[string] {
+	value := pulumix.Apply[Organization](o, func(v Organization) pulumix.Output[string] { return v.ClientToken })
+	return pulumix.Flatten[string, pulumix.Output[string]](value)
+}
+
+func (o OrganizationOutput) DirectoryId() pulumix.Output[string] {
+	value := pulumix.Apply[Organization](o, func(v Organization) pulumix.Output[string] { return v.DirectoryId })
+	return pulumix.Flatten[string, pulumix.Output[string]](value)
+}
+
+func (o OrganizationOutput) Domains() pulumix.GArrayOutput[types.Domain, types.DomainOutput] {
+	value := pulumix.Apply[Organization](o, func(v Organization) pulumix.GArrayOutput[types.Domain, types.DomainOutput] { return v.Domains })
+	unwrapped := pulumix.Flatten[[]types.Domain, pulumix.GArrayOutput[types.Domain, types.DomainOutput]](value)
+	return pulumix.GArrayOutput[types.Domain, types.DomainOutput]{OutputState: unwrapped.OutputState}
+}
+
+func (o OrganizationOutput) EnableInteroperability() pulumix.Output[bool] {
+	value := pulumix.Apply[Organization](o, func(v Organization) pulumix.Output[bool] { return v.EnableInteroperability })
+	return pulumix.Flatten[bool, pulumix.Output[bool]](value)
+}
+
+func (o OrganizationOutput) KmsKeyArn() pulumix.Output[string] {
+	value := pulumix.Apply[Organization](o, func(v Organization) pulumix.Output[string] { return v.KmsKeyArn })
+	return pulumix.Flatten[string, pulumix.Output[string]](value)
 }
 
 func init() {

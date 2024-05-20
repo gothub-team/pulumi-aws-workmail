@@ -12,6 +12,25 @@ namespace Pulumi.Awsworkmail
     [AwsworkmailResourceType("awsworkmail:index:Organization")]
     public partial class Organization : global::Pulumi.CustomResource
     {
+        [Output("alias")]
+        public Output<string> Alias { get; private set; } = null!;
+
+        [Output("clientToken")]
+        public Output<string> ClientToken { get; private set; } = null!;
+
+        [Output("directoryId")]
+        public Output<string> DirectoryId { get; private set; } = null!;
+
+        [Output("domains")]
+        public Output<ImmutableArray<Pulumi.Awsworkmail.Types.Outputs.Domain>> Domains { get; private set; } = null!;
+
+        [Output("enableInteroperability")]
+        public Output<bool> EnableInteroperability { get; private set; } = null!;
+
+        [Output("kmsKeyArn")]
+        public Output<string> KmsKeyArn { get; private set; } = null!;
+
+
         /// <summary>
         /// Create a Organization resource with the given unique name, arguments, and options.
         /// </summary>
@@ -19,7 +38,7 @@ namespace Pulumi.Awsworkmail
         /// <param name="name">The unique name of the resource</param>
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
-        public Organization(string name, OrganizationArgs? args = null, CustomResourceOptions? options = null)
+        public Organization(string name, OrganizationArgs args, CustomResourceOptions? options = null)
             : base("awsworkmail:index:Organization", name, args ?? new OrganizationArgs(), MakeResourceOptions(options, ""))
         {
         }
@@ -57,6 +76,29 @@ namespace Pulumi.Awsworkmail
 
     public sealed class OrganizationArgs : global::Pulumi.ResourceArgs
     {
+        [Input("alias", required: true)]
+        public Input<string> Alias { get; set; } = null!;
+
+        [Input("clientToken", required: true)]
+        public Input<string> ClientToken { get; set; } = null!;
+
+        [Input("directoryId", required: true)]
+        public Input<string> DirectoryId { get; set; } = null!;
+
+        [Input("domains", required: true)]
+        private InputList<Pulumi.Awsworkmail.Types.Inputs.DomainArgs>? _domains;
+        public InputList<Pulumi.Awsworkmail.Types.Inputs.DomainArgs> Domains
+        {
+            get => _domains ?? (_domains = new InputList<Pulumi.Awsworkmail.Types.Inputs.DomainArgs>());
+            set => _domains = value;
+        }
+
+        [Input("enableInteroperability", required: true)]
+        public Input<bool> EnableInteroperability { get; set; } = null!;
+
+        [Input("kmsKeyArn", required: true)]
+        public Input<string> KmsKeyArn { get; set; } = null!;
+
         public OrganizationArgs()
         {
         }

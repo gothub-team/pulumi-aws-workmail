@@ -8,16 +8,82 @@ import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
+from . import types as _types
 
 __all__ = ['OrganizationArgs', 'Organization']
 
 @pulumi.input_type
 class OrganizationArgs:
-    def __init__(__self__):
+    def __init__(__self__, *,
+                 alias: pulumi.Input[str],
+                 client_token: pulumi.Input[str],
+                 directory_id: pulumi.Input[str],
+                 domains: pulumi.Input[Sequence[pulumi.Input['_types.DomainArgs']]],
+                 enable_interoperability: pulumi.Input[bool],
+                 kms_key_arn: pulumi.Input[str]):
         """
         The set of arguments for constructing a Organization resource.
         """
-        pass
+        pulumi.set(__self__, "alias", alias)
+        pulumi.set(__self__, "client_token", client_token)
+        pulumi.set(__self__, "directory_id", directory_id)
+        pulumi.set(__self__, "domains", domains)
+        pulumi.set(__self__, "enable_interoperability", enable_interoperability)
+        pulumi.set(__self__, "kms_key_arn", kms_key_arn)
+
+    @property
+    @pulumi.getter
+    def alias(self) -> pulumi.Input[str]:
+        return pulumi.get(self, "alias")
+
+    @alias.setter
+    def alias(self, value: pulumi.Input[str]):
+        pulumi.set(self, "alias", value)
+
+    @property
+    @pulumi.getter(name="clientToken")
+    def client_token(self) -> pulumi.Input[str]:
+        return pulumi.get(self, "client_token")
+
+    @client_token.setter
+    def client_token(self, value: pulumi.Input[str]):
+        pulumi.set(self, "client_token", value)
+
+    @property
+    @pulumi.getter(name="directoryId")
+    def directory_id(self) -> pulumi.Input[str]:
+        return pulumi.get(self, "directory_id")
+
+    @directory_id.setter
+    def directory_id(self, value: pulumi.Input[str]):
+        pulumi.set(self, "directory_id", value)
+
+    @property
+    @pulumi.getter
+    def domains(self) -> pulumi.Input[Sequence[pulumi.Input['_types.DomainArgs']]]:
+        return pulumi.get(self, "domains")
+
+    @domains.setter
+    def domains(self, value: pulumi.Input[Sequence[pulumi.Input['_types.DomainArgs']]]):
+        pulumi.set(self, "domains", value)
+
+    @property
+    @pulumi.getter(name="enableInteroperability")
+    def enable_interoperability(self) -> pulumi.Input[bool]:
+        return pulumi.get(self, "enable_interoperability")
+
+    @enable_interoperability.setter
+    def enable_interoperability(self, value: pulumi.Input[bool]):
+        pulumi.set(self, "enable_interoperability", value)
+
+    @property
+    @pulumi.getter(name="kmsKeyArn")
+    def kms_key_arn(self) -> pulumi.Input[str]:
+        return pulumi.get(self, "kms_key_arn")
+
+    @kms_key_arn.setter
+    def kms_key_arn(self, value: pulumi.Input[str]):
+        pulumi.set(self, "kms_key_arn", value)
 
 
 class Organization(pulumi.CustomResource):
@@ -25,6 +91,12 @@ class Organization(pulumi.CustomResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
+                 alias: Optional[pulumi.Input[str]] = None,
+                 client_token: Optional[pulumi.Input[str]] = None,
+                 directory_id: Optional[pulumi.Input[str]] = None,
+                 domains: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['_types.DomainArgs']]]]] = None,
+                 enable_interoperability: Optional[pulumi.Input[bool]] = None,
+                 kms_key_arn: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
         Create a Organization resource with the given unique name, props, and options.
@@ -35,7 +107,7 @@ class Organization(pulumi.CustomResource):
     @overload
     def __init__(__self__,
                  resource_name: str,
-                 args: Optional[OrganizationArgs] = None,
+                 args: OrganizationArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         Create a Organization resource with the given unique name, props, and options.
@@ -54,6 +126,12 @@ class Organization(pulumi.CustomResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
+                 alias: Optional[pulumi.Input[str]] = None,
+                 client_token: Optional[pulumi.Input[str]] = None,
+                 directory_id: Optional[pulumi.Input[str]] = None,
+                 domains: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['_types.DomainArgs']]]]] = None,
+                 enable_interoperability: Optional[pulumi.Input[bool]] = None,
+                 kms_key_arn: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
@@ -63,6 +141,24 @@ class Organization(pulumi.CustomResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = OrganizationArgs.__new__(OrganizationArgs)
 
+            if alias is None and not opts.urn:
+                raise TypeError("Missing required property 'alias'")
+            __props__.__dict__["alias"] = alias
+            if client_token is None and not opts.urn:
+                raise TypeError("Missing required property 'client_token'")
+            __props__.__dict__["client_token"] = client_token
+            if directory_id is None and not opts.urn:
+                raise TypeError("Missing required property 'directory_id'")
+            __props__.__dict__["directory_id"] = directory_id
+            if domains is None and not opts.urn:
+                raise TypeError("Missing required property 'domains'")
+            __props__.__dict__["domains"] = domains
+            if enable_interoperability is None and not opts.urn:
+                raise TypeError("Missing required property 'enable_interoperability'")
+            __props__.__dict__["enable_interoperability"] = enable_interoperability
+            if kms_key_arn is None and not opts.urn:
+                raise TypeError("Missing required property 'kms_key_arn'")
+            __props__.__dict__["kms_key_arn"] = kms_key_arn
         super(Organization, __self__).__init__(
             'awsworkmail:index:Organization',
             resource_name,
@@ -85,5 +181,41 @@ class Organization(pulumi.CustomResource):
 
         __props__ = OrganizationArgs.__new__(OrganizationArgs)
 
+        __props__.__dict__["alias"] = None
+        __props__.__dict__["client_token"] = None
+        __props__.__dict__["directory_id"] = None
+        __props__.__dict__["domains"] = None
+        __props__.__dict__["enable_interoperability"] = None
+        __props__.__dict__["kms_key_arn"] = None
         return Organization(resource_name, opts=opts, __props__=__props__)
+
+    @property
+    @pulumi.getter
+    def alias(self) -> pulumi.Output[str]:
+        return pulumi.get(self, "alias")
+
+    @property
+    @pulumi.getter(name="clientToken")
+    def client_token(self) -> pulumi.Output[str]:
+        return pulumi.get(self, "client_token")
+
+    @property
+    @pulumi.getter(name="directoryId")
+    def directory_id(self) -> pulumi.Output[str]:
+        return pulumi.get(self, "directory_id")
+
+    @property
+    @pulumi.getter
+    def domains(self) -> pulumi.Output[Sequence['_types.outputs.Domain']]:
+        return pulumi.get(self, "domains")
+
+    @property
+    @pulumi.getter(name="enableInteroperability")
+    def enable_interoperability(self) -> pulumi.Output[bool]:
+        return pulumi.get(self, "enable_interoperability")
+
+    @property
+    @pulumi.getter(name="kmsKeyArn")
+    def kms_key_arn(self) -> pulumi.Output[str]:
+        return pulumi.get(self, "kms_key_arn")
 

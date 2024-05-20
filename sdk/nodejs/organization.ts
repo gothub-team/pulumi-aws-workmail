@@ -2,6 +2,8 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
+import * as inputs from "./types/input";
+import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
 export class Organization extends pulumi.CustomResource {
@@ -31,6 +33,12 @@ export class Organization extends pulumi.CustomResource {
         return obj['__pulumiType'] === Organization.__pulumiType;
     }
 
+    public readonly alias!: pulumi.Output<string>;
+    public readonly clientToken!: pulumi.Output<string>;
+    public readonly directoryId!: pulumi.Output<string>;
+    public readonly domains!: pulumi.Output<outputs.types.Domain[]>;
+    public readonly enableInteroperability!: pulumi.Output<boolean>;
+    public readonly kmsKeyArn!: pulumi.Output<string>;
 
     /**
      * Create a Organization resource with the given unique name, arguments, and options.
@@ -39,11 +47,41 @@ export class Organization extends pulumi.CustomResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param opts A bag of options that control this resource's behavior.
      */
-    constructor(name: string, args?: OrganizationArgs, opts?: pulumi.CustomResourceOptions) {
+    constructor(name: string, args: OrganizationArgs, opts?: pulumi.CustomResourceOptions) {
         let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         if (!opts.id) {
+            if ((!args || args.alias === undefined) && !opts.urn) {
+                throw new Error("Missing required property 'alias'");
+            }
+            if ((!args || args.clientToken === undefined) && !opts.urn) {
+                throw new Error("Missing required property 'clientToken'");
+            }
+            if ((!args || args.directoryId === undefined) && !opts.urn) {
+                throw new Error("Missing required property 'directoryId'");
+            }
+            if ((!args || args.domains === undefined) && !opts.urn) {
+                throw new Error("Missing required property 'domains'");
+            }
+            if ((!args || args.enableInteroperability === undefined) && !opts.urn) {
+                throw new Error("Missing required property 'enableInteroperability'");
+            }
+            if ((!args || args.kmsKeyArn === undefined) && !opts.urn) {
+                throw new Error("Missing required property 'kmsKeyArn'");
+            }
+            resourceInputs["alias"] = args ? args.alias : undefined;
+            resourceInputs["clientToken"] = args ? args.clientToken : undefined;
+            resourceInputs["directoryId"] = args ? args.directoryId : undefined;
+            resourceInputs["domains"] = args ? args.domains : undefined;
+            resourceInputs["enableInteroperability"] = args ? args.enableInteroperability : undefined;
+            resourceInputs["kmsKeyArn"] = args ? args.kmsKeyArn : undefined;
         } else {
+            resourceInputs["alias"] = undefined /*out*/;
+            resourceInputs["clientToken"] = undefined /*out*/;
+            resourceInputs["directoryId"] = undefined /*out*/;
+            resourceInputs["domains"] = undefined /*out*/;
+            resourceInputs["enableInteroperability"] = undefined /*out*/;
+            resourceInputs["kmsKeyArn"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Organization.__pulumiType, name, resourceInputs, opts);
@@ -54,4 +92,10 @@ export class Organization extends pulumi.CustomResource {
  * The set of arguments for constructing a Organization resource.
  */
 export interface OrganizationArgs {
+    alias: pulumi.Input<string>;
+    clientToken: pulumi.Input<string>;
+    directoryId: pulumi.Input<string>;
+    domains: pulumi.Input<pulumi.Input<inputs.types.DomainArgs>[]>;
+    enableInteroperability: pulumi.Input<boolean>;
+    kmsKeyArn: pulumi.Input<string>;
 }
