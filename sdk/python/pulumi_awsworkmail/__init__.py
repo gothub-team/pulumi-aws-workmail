@@ -5,8 +5,8 @@
 from . import _utilities
 import typing
 # Export this package's modules as members:
+from .organization import *
 from .provider import *
-from .random import *
 _utilities.register(
     resource_modules="""
 [
@@ -15,7 +15,7 @@ _utilities.register(
   "mod": "index",
   "fqn": "pulumi_awsworkmail",
   "classes": {
-   "awsworkmail:index:Random": "Random"
+   "awsworkmail:index:Organization": "Organization"
   }
  }
 ]
