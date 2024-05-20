@@ -53,7 +53,7 @@ namespace Pulumi.Awsworkmail
         {
             var dst = src ?? new global::Pulumi.InvokeOptions{};
             dst.Version = src?.Version ?? Version;
-            dst.PluginDownloadURL = src?.PluginDownloadURL ?? "https://github.com/gothub-team/pulumi-awsworkmail/releases/download/0.0.14/";
+            dst.PluginDownloadURL = src?.PluginDownloadURL ?? "github://api.github.com/gothub-team";
             return dst;
         }
 

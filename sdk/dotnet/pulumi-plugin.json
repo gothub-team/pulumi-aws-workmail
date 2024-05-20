@@ -1,5 +1,5 @@
 {
   "resource": true,
   "name": "awsworkmail",
-  "server": "https://github.com/gothub-team/pulumi-awsworkmail/releases/download/0.0.14/"
+  "server": "github://api.github.com/gothub-team"
 }

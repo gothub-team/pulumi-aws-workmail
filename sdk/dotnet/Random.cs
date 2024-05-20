@@ -41,7 +41,7 @@ namespace Pulumi.Awsworkmail
             var defaultOptions = new CustomResourceOptions
             {
                 Version = Utilities.Version,
-                PluginDownloadURL = "https://github.com/gothub-team/pulumi-awsworkmail/releases/download/0.0.14/",
+                PluginDownloadURL = "github://api.github.com/gothub-team",
             };
             var merged = CustomResourceOptions.Merge(defaultOptions, options);
             // Override the ID if one was specified for consistency with other language SDKs.
