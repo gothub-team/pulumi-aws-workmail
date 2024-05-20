@@ -18,6 +18,7 @@ import (
 	"math/rand"
 	"time"
 
+	"github.com/blang/semver"
 	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
 	"github.com/pulumi/pulumi-go-provider/middleware/schema"
@@ -49,7 +50,7 @@ func Provider() p.Provider {
 					ImportBasePath: "github.com/gothub-team/pulumi-awsworkmail/sdk/go/awsworkmail",
 				},
 			},
-			PluginDownloadURL: "https://github.com/gothub-team/pulumi-awsworkmail/releases/download/" + Version + "/",
+			PluginDownloadURL: "https://github.com/gothub-team/pulumi-awsworkmail/releases/download/" + semver.Version{}.String() + "/",
 		},
 	})
 }
