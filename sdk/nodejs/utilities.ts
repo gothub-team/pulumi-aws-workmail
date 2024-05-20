@@ -53,7 +53,7 @@ export function getVersion(): string {
 
 /** @internal */
 export function resourceOptsDefaults(): any {
-    return { version: getVersion(), pluginDownloadURL: "https://github.com/gothub-team/pulumi-awsworkmail/releases/download/0.0.10/" };
+    return { version: getVersion(), pluginDownloadURL: "https://github.com/gothub-team/pulumi-awsworkmail/releases/download/0.0.14/" };
 }
 
 /** @internal */
