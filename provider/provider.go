@@ -23,6 +23,7 @@ import (
 	"github.com/pulumi/pulumi-go-provider/middleware/schema"
 	gen "github.com/pulumi/pulumi/pkg/v3/codegen/go"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 // Version is initialized by the Go linker to contain the semver of this build.
@@ -71,7 +72,7 @@ type RandomArgs struct {
 	// Fields projected into Pulumi must be public and hava a `pulumi:"..."` tag.
 	// The pulumi tag doesn't need to match the field name, but it's generally a
 	// good idea.
-	Length int `pulumi:"length"`
+	Length pulumi.IntInput `pulumi:"length"`
 }
 
 // Each resource has a state, describing the fields that exist on the created resource.
@@ -79,7 +80,7 @@ type RandomState struct {
 	// It is generally a good idea to embed args in outputs, but it isn't strictly necessary.
 	RandomArgs
 	// Here we define a required output called result.
-	Result string `pulumi:"result"`
+	Result pulumi.StringOutput `pulumi:"result"`
 }
 
 // All resources must implement Create at a minimum.
@@ -88,7 +89,9 @@ func (Random) Create(ctx p.Context, name string, input RandomArgs, preview bool)
 	if preview {
 		return name, state, nil
 	}
-	state.Result = makeRandom(input.Length)
+	state.Result = input.Length.ToIntOutput().ApplyT(func(length int) string {
+		return makeRandom(length)
+	}).(pulumi.StringOutput)
 	return name, state, nil
 }
 
