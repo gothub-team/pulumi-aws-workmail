@@ -10,11 +10,11 @@ from typing import Any, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
 
 __all__ = [
-    'DomainArgs',
+    'Domain',
 ]
 
 @pulumi.output_type
-class DomainArgs(dict):
+class Domain(dict):
     @staticmethod
     def __key_warning(key: str):
         suggest = None
@@ -24,14 +24,14 @@ class DomainArgs(dict):
             suggest = "hosted_zone_id"
 
         if suggest:
-            pulumi.log.warn(f"Key '{key}' not found in DomainArgs. Access the value via the '{suggest}' property getter instead.")
+            pulumi.log.warn(f"Key '{key}' not found in Domain. Access the value via the '{suggest}' property getter instead.")
 
     def __getitem__(self, key: str) -> Any:
-        DomainArgs.__key_warning(key)
+        Domain.__key_warning(key)
         return super().__getitem__(key)
 
     def get(self, key: str, default = None) -> Any:
-        DomainArgs.__key_warning(key)
+        Domain.__key_warning(key)
         return super().get(key, default)
 
     def __init__(__self__, *,

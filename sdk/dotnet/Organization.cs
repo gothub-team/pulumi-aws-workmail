@@ -22,7 +22,7 @@ namespace Pulumi.Awsworkmail
         public Output<string> DirectoryId { get; private set; } = null!;
 
         [Output("domains")]
-        public Output<ImmutableArray<Outputs.DomainArgs>> Domains { get; private set; } = null!;
+        public Output<ImmutableArray<Outputs.Domain>> Domains { get; private set; } = null!;
 
         [Output("enableInteroperability")]
         public Output<bool> EnableInteroperability { get; private set; } = null!;
@@ -86,10 +86,10 @@ namespace Pulumi.Awsworkmail
         public Input<string> DirectoryId { get; set; } = null!;
 
         [Input("domains", required: true)]
-        private InputList<Inputs.DomainArgsArgs>? _domains;
-        public InputList<Inputs.DomainArgsArgs> Domains
+        private InputList<Inputs.DomainArgs>? _domains;
+        public InputList<Inputs.DomainArgs> Domains
         {
-            get => _domains ?? (_domains = new InputList<Inputs.DomainArgsArgs>());
+            get => _domains ?? (_domains = new InputList<Inputs.DomainArgs>());
             set => _domains = value;
         }
 

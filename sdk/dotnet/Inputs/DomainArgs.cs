@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.Awsworkmail.Inputs
 {
 
-    public sealed class DomainArgsArgs : global::Pulumi.ResourceArgs
+    public sealed class DomainArgs : global::Pulumi.ResourceArgs
     {
         [Input("domainName", required: true)]
         public Input<string> DomainName { get; set; } = null!;
@@ -18,9 +18,9 @@ namespace Pulumi.Awsworkmail.Inputs
         [Input("hostedZoneId", required: true)]
         public Input<string> HostedZoneId { get; set; } = null!;
 
-        public DomainArgsArgs()
+        public DomainArgs()
         {
         }
-        public static new DomainArgsArgs Empty => new DomainArgsArgs();
+        public static new DomainArgs Empty => new DomainArgs();
     }
 }

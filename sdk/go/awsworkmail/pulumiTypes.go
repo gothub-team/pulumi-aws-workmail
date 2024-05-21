@@ -14,60 +14,60 @@ import (
 
 var _ = internal.GetEnvOrDefault
 
-type DomainArgs struct {
+type Domain struct {
 	DomainName   string `pulumi:"domainName"`
 	HostedZoneId string `pulumi:"hostedZoneId"`
 }
 
-type DomainArgsArgs struct {
+type DomainArgs struct {
 	DomainName   pulumix.Input[string] `pulumi:"domainName"`
 	HostedZoneId pulumix.Input[string] `pulumi:"hostedZoneId"`
 }
 
-func (DomainArgsArgs) ElementType() reflect.Type {
-	return reflect.TypeOf((*DomainArgs)(nil)).Elem()
+func (DomainArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*Domain)(nil)).Elem()
 }
 
-func (i DomainArgsArgs) ToDomainArgsOutput() DomainArgsOutput {
-	return i.ToDomainArgsOutputWithContext(context.Background())
+func (i DomainArgs) ToDomainOutput() DomainOutput {
+	return i.ToDomainOutputWithContext(context.Background())
 }
 
-func (i DomainArgsArgs) ToDomainArgsOutputWithContext(ctx context.Context) DomainArgsOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(DomainArgsOutput)
+func (i DomainArgs) ToDomainOutputWithContext(ctx context.Context) DomainOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(DomainOutput)
 }
 
-func (i *DomainArgsArgs) ToOutput(ctx context.Context) pulumix.Output[*DomainArgsArgs] {
+func (i *DomainArgs) ToOutput(ctx context.Context) pulumix.Output[*DomainArgs] {
 	return pulumix.Val(i)
 }
 
-type DomainArgsOutput struct{ *pulumi.OutputState }
+type DomainOutput struct{ *pulumi.OutputState }
 
-func (DomainArgsOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*DomainArgs)(nil)).Elem()
+func (DomainOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*Domain)(nil)).Elem()
 }
 
-func (o DomainArgsOutput) ToDomainArgsOutput() DomainArgsOutput {
+func (o DomainOutput) ToDomainOutput() DomainOutput {
 	return o
 }
 
-func (o DomainArgsOutput) ToDomainArgsOutputWithContext(ctx context.Context) DomainArgsOutput {
+func (o DomainOutput) ToDomainOutputWithContext(ctx context.Context) DomainOutput {
 	return o
 }
 
-func (o DomainArgsOutput) ToOutput(ctx context.Context) pulumix.Output[DomainArgs] {
-	return pulumix.Output[DomainArgs]{
+func (o DomainOutput) ToOutput(ctx context.Context) pulumix.Output[Domain] {
+	return pulumix.Output[Domain]{
 		OutputState: o.OutputState,
 	}
 }
 
-func (o DomainArgsOutput) DomainName() pulumix.Output[string] {
-	return pulumix.Apply[DomainArgs](o, func(v DomainArgs) string { return v.DomainName })
+func (o DomainOutput) DomainName() pulumix.Output[string] {
+	return pulumix.Apply[Domain](o, func(v Domain) string { return v.DomainName })
 }
 
-func (o DomainArgsOutput) HostedZoneId() pulumix.Output[string] {
-	return pulumix.Apply[DomainArgs](o, func(v DomainArgs) string { return v.HostedZoneId })
+func (o DomainOutput) HostedZoneId() pulumix.Output[string] {
+	return pulumix.Apply[Domain](o, func(v Domain) string { return v.HostedZoneId })
 }
 
 func init() {
-	pulumi.RegisterOutputType(DomainArgsOutput{})
+	pulumi.RegisterOutputType(DomainOutput{})
 }

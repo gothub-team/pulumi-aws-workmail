@@ -10,11 +10,11 @@ from typing import Any, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
 
 __all__ = [
-    'DomainArgsArgs',
+    'DomainArgs',
 ]
 
 @pulumi.input_type
-class DomainArgsArgs:
+class DomainArgs:
     def __init__(__self__, *,
                  domain_name: pulumi.Input[str],
                  hosted_zone_id: pulumi.Input[str]):

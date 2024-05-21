@@ -19,7 +19,7 @@ class OrganizationArgs:
                  alias: pulumi.Input[str],
                  client_token: pulumi.Input[str],
                  directory_id: pulumi.Input[str],
-                 domains: pulumi.Input[Sequence[pulumi.Input['DomainArgsArgs']]],
+                 domains: pulumi.Input[Sequence[pulumi.Input['DomainArgs']]],
                  enable_interoperability: pulumi.Input[bool],
                  kms_key_arn: pulumi.Input[str]):
         """
@@ -61,11 +61,11 @@ class OrganizationArgs:
 
     @property
     @pulumi.getter
-    def domains(self) -> pulumi.Input[Sequence[pulumi.Input['DomainArgsArgs']]]:
+    def domains(self) -> pulumi.Input[Sequence[pulumi.Input['DomainArgs']]]:
         return pulumi.get(self, "domains")
 
     @domains.setter
-    def domains(self, value: pulumi.Input[Sequence[pulumi.Input['DomainArgsArgs']]]):
+    def domains(self, value: pulumi.Input[Sequence[pulumi.Input['DomainArgs']]]):
         pulumi.set(self, "domains", value)
 
     @property
@@ -95,7 +95,7 @@ class Organization(pulumi.CustomResource):
                  alias: Optional[pulumi.Input[str]] = None,
                  client_token: Optional[pulumi.Input[str]] = None,
                  directory_id: Optional[pulumi.Input[str]] = None,
-                 domains: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['DomainArgsArgs']]]]] = None,
+                 domains: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['DomainArgs']]]]] = None,
                  enable_interoperability: Optional[pulumi.Input[bool]] = None,
                  kms_key_arn: Optional[pulumi.Input[str]] = None,
                  __props__=None):
@@ -130,7 +130,7 @@ class Organization(pulumi.CustomResource):
                  alias: Optional[pulumi.Input[str]] = None,
                  client_token: Optional[pulumi.Input[str]] = None,
                  directory_id: Optional[pulumi.Input[str]] = None,
-                 domains: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['DomainArgsArgs']]]]] = None,
+                 domains: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['DomainArgs']]]]] = None,
                  enable_interoperability: Optional[pulumi.Input[bool]] = None,
                  kms_key_arn: Optional[pulumi.Input[str]] = None,
                  __props__=None):
@@ -207,7 +207,7 @@ class Organization(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def domains(self) -> pulumi.Output[Sequence['outputs.DomainArgs']]:
+    def domains(self) -> pulumi.Output[Sequence['outputs.Domain']]:
         return pulumi.get(self, "domains")
 
     @property

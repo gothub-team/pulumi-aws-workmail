@@ -36,7 +36,7 @@ export class Organization extends pulumi.CustomResource {
     public readonly alias!: pulumi.Output<string>;
     public readonly clientToken!: pulumi.Output<string>;
     public readonly directoryId!: pulumi.Output<string>;
-    public readonly domains!: pulumi.Output<outputs.DomainArgs[]>;
+    public readonly domains!: pulumi.Output<outputs.Domain[]>;
     public readonly enableInteroperability!: pulumi.Output<boolean>;
     public readonly kmsKeyArn!: pulumi.Output<string>;
 
@@ -95,7 +95,7 @@ export interface OrganizationArgs {
     alias: pulumi.Input<string>;
     clientToken: pulumi.Input<string>;
     directoryId: pulumi.Input<string>;
-    domains: pulumi.Input<pulumi.Input<inputs.DomainArgsArgs>[]>;
+    domains: pulumi.Input<pulumi.Input<inputs.DomainArgs>[]>;
     enableInteroperability: pulumi.Input<boolean>;
     kmsKeyArn: pulumi.Input<string>;
 }

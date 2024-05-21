@@ -24,7 +24,7 @@ type OrganizationArgs struct {
 	// The organization alias.
 	Alias string `pulumi:"alias"`
 	// The email domains to associate with the organization.
-	Domains []DomainArgs `pulumi:"domains"`
+	Domains []Domain `pulumi:"domains"`
 	// The idempotency token associated with the request.
 	ClientToken *string `pulumi:"clientToken"`
 	// The AWS Directory Service directory ID.
@@ -35,7 +35,7 @@ type OrganizationArgs struct {
 	EnableInteroperability bool `pulumi:"enableInteroperability"`
 }
 
-type DomainArgs struct {
+type Domain struct {
 	// The domain name.
 	DomainName string `pulumi:"domainName"`
 	// The hosted zone id for the domain.
@@ -65,7 +65,7 @@ func (Organization) Create(ctx p.Context, name string, input OrganizationArgs, p
 
 	organization, err := workmailclient.CreateOrganization(ctx, &workmail.CreateOrganizationInput{
 		Alias: &input.Alias,
-		Domains: Map(func(domain DomainArgs) types.Domain {
+		Domains: Map(func(domain Domain) types.Domain {
 			return types.Domain{
 				DomainName:   &domain.DomainName,
 				HostedZoneId: &domain.HostedZoneId,

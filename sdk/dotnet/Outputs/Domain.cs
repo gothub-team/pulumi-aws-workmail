@@ -11,13 +11,13 @@ namespace Pulumi.Awsworkmail.Outputs
 {
 
     [OutputType]
-    public sealed class DomainArgs
+    public sealed class Domain
     {
         public readonly string DomainName;
         public readonly string HostedZoneId;
 
         [OutputConstructor]
-        private DomainArgs(
+        private Domain(
             string domainName,
 
             string hostedZoneId)
