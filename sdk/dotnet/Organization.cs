@@ -16,19 +16,19 @@ namespace Pulumi.Awsworkmail
         public Output<string> Alias { get; private set; } = null!;
 
         [Output("clientToken")]
-        public Output<string> ClientToken { get; private set; } = null!;
+        public Output<string?> ClientToken { get; private set; } = null!;
 
         [Output("directoryId")]
-        public Output<string> DirectoryId { get; private set; } = null!;
+        public Output<string?> DirectoryId { get; private set; } = null!;
 
         [Output("domains")]
         public Output<ImmutableArray<Outputs.Domain>> Domains { get; private set; } = null!;
 
         [Output("enableInteroperability")]
-        public Output<bool> EnableInteroperability { get; private set; } = null!;
+        public Output<bool?> EnableInteroperability { get; private set; } = null!;
 
         [Output("kmsKeyArn")]
-        public Output<string> KmsKeyArn { get; private set; } = null!;
+        public Output<string?> KmsKeyArn { get; private set; } = null!;
 
 
         /// <summary>
@@ -79,11 +79,11 @@ namespace Pulumi.Awsworkmail
         [Input("alias", required: true)]
         public Input<string> Alias { get; set; } = null!;
 
-        [Input("clientToken", required: true)]
-        public Input<string> ClientToken { get; set; } = null!;
+        [Input("clientToken")]
+        public Input<string>? ClientToken { get; set; }
 
-        [Input("directoryId", required: true)]
-        public Input<string> DirectoryId { get; set; } = null!;
+        [Input("directoryId")]
+        public Input<string>? DirectoryId { get; set; }
 
         [Input("domains", required: true)]
         private InputList<Inputs.DomainArgs>? _domains;
@@ -93,11 +93,11 @@ namespace Pulumi.Awsworkmail
             set => _domains = value;
         }
 
-        [Input("enableInteroperability", required: true)]
-        public Input<bool> EnableInteroperability { get; set; } = null!;
+        [Input("enableInteroperability")]
+        public Input<bool>? EnableInteroperability { get; set; }
 
-        [Input("kmsKeyArn", required: true)]
-        public Input<string> KmsKeyArn { get; set; } = null!;
+        [Input("kmsKeyArn")]
+        public Input<string>? KmsKeyArn { get; set; }
 
         public OrganizationArgs()
         {

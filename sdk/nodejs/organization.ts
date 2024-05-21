@@ -34,11 +34,11 @@ export class Organization extends pulumi.CustomResource {
     }
 
     public readonly alias!: pulumi.Output<string>;
-    public readonly clientToken!: pulumi.Output<string>;
-    public readonly directoryId!: pulumi.Output<string>;
+    public readonly clientToken!: pulumi.Output<string | undefined>;
+    public readonly directoryId!: pulumi.Output<string | undefined>;
     public readonly domains!: pulumi.Output<outputs.Domain[]>;
-    public readonly enableInteroperability!: pulumi.Output<boolean>;
-    public readonly kmsKeyArn!: pulumi.Output<string>;
+    public readonly enableInteroperability!: pulumi.Output<boolean | undefined>;
+    public readonly kmsKeyArn!: pulumi.Output<string | undefined>;
 
     /**
      * Create a Organization resource with the given unique name, arguments, and options.
@@ -54,20 +54,8 @@ export class Organization extends pulumi.CustomResource {
             if ((!args || args.alias === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'alias'");
             }
-            if ((!args || args.clientToken === undefined) && !opts.urn) {
-                throw new Error("Missing required property 'clientToken'");
-            }
-            if ((!args || args.directoryId === undefined) && !opts.urn) {
-                throw new Error("Missing required property 'directoryId'");
-            }
             if ((!args || args.domains === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'domains'");
-            }
-            if ((!args || args.enableInteroperability === undefined) && !opts.urn) {
-                throw new Error("Missing required property 'enableInteroperability'");
-            }
-            if ((!args || args.kmsKeyArn === undefined) && !opts.urn) {
-                throw new Error("Missing required property 'kmsKeyArn'");
             }
             resourceInputs["alias"] = args ? args.alias : undefined;
             resourceInputs["clientToken"] = args ? args.clientToken : undefined;
@@ -93,9 +81,9 @@ export class Organization extends pulumi.CustomResource {
  */
 export interface OrganizationArgs {
     alias: pulumi.Input<string>;
-    clientToken: pulumi.Input<string>;
-    directoryId: pulumi.Input<string>;
+    clientToken?: pulumi.Input<string>;
+    directoryId?: pulumi.Input<string>;
     domains: pulumi.Input<pulumi.Input<inputs.DomainArgs>[]>;
-    enableInteroperability: pulumi.Input<boolean>;
-    kmsKeyArn: pulumi.Input<string>;
+    enableInteroperability?: pulumi.Input<boolean>;
+    kmsKeyArn?: pulumi.Input<string>;
 }

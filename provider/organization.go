@@ -26,13 +26,13 @@ type OrganizationArgs struct {
 	// The email domains to associate with the organization.
 	Domains []Domain `pulumi:"domains"`
 	// The idempotency token associated with the request.
-	ClientToken *string `pulumi:"clientToken"`
+	ClientToken *string `pulumi:"clientToken,optional"`
 	// The AWS Directory Service directory ID.
-	DirectoryId *string `pulumi:"directoryId"`
+	DirectoryId *string `pulumi:"directoryId,optional"`
 	// The Amazon Resource Name (ARN) of a customer managed key from AWS KMS.
-	KmsKeyArn *string `pulumi:"kmsKeyArn"`
+	KmsKeyArn *string `pulumi:"kmsKeyArn,optional"`
 	// When true , allows organization interoperability between WorkMail and Microsoft Exchange. If true , you must include a AD Connector directory ID in the request.
-	EnableInteroperability bool `pulumi:"enableInteroperability"`
+	EnableInteroperability *bool `pulumi:"enableInteroperability,optional"`
 }
 
 type Domain struct {
@@ -74,7 +74,7 @@ func (Organization) Create(ctx p.Context, name string, input OrganizationArgs, p
 		ClientToken:            input.ClientToken,
 		DirectoryId:            input.DirectoryId,
 		KmsKeyArn:              input.KmsKeyArn,
-		EnableInteroperability: true,
+		EnableInteroperability: *input.EnableInteroperability,
 	})
 	if err != nil {
 		return "", state, err

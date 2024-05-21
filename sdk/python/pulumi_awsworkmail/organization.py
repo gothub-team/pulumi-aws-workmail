@@ -17,20 +17,24 @@ __all__ = ['OrganizationArgs', 'Organization']
 class OrganizationArgs:
     def __init__(__self__, *,
                  alias: pulumi.Input[str],
-                 client_token: pulumi.Input[str],
-                 directory_id: pulumi.Input[str],
                  domains: pulumi.Input[Sequence[pulumi.Input['DomainArgs']]],
-                 enable_interoperability: pulumi.Input[bool],
-                 kms_key_arn: pulumi.Input[str]):
+                 client_token: Optional[pulumi.Input[str]] = None,
+                 directory_id: Optional[pulumi.Input[str]] = None,
+                 enable_interoperability: Optional[pulumi.Input[bool]] = None,
+                 kms_key_arn: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a Organization resource.
         """
         pulumi.set(__self__, "alias", alias)
-        pulumi.set(__self__, "client_token", client_token)
-        pulumi.set(__self__, "directory_id", directory_id)
         pulumi.set(__self__, "domains", domains)
-        pulumi.set(__self__, "enable_interoperability", enable_interoperability)
-        pulumi.set(__self__, "kms_key_arn", kms_key_arn)
+        if client_token is not None:
+            pulumi.set(__self__, "client_token", client_token)
+        if directory_id is not None:
+            pulumi.set(__self__, "directory_id", directory_id)
+        if enable_interoperability is not None:
+            pulumi.set(__self__, "enable_interoperability", enable_interoperability)
+        if kms_key_arn is not None:
+            pulumi.set(__self__, "kms_key_arn", kms_key_arn)
 
     @property
     @pulumi.getter
@@ -42,24 +46,6 @@ class OrganizationArgs:
         pulumi.set(self, "alias", value)
 
     @property
-    @pulumi.getter(name="clientToken")
-    def client_token(self) -> pulumi.Input[str]:
-        return pulumi.get(self, "client_token")
-
-    @client_token.setter
-    def client_token(self, value: pulumi.Input[str]):
-        pulumi.set(self, "client_token", value)
-
-    @property
-    @pulumi.getter(name="directoryId")
-    def directory_id(self) -> pulumi.Input[str]:
-        return pulumi.get(self, "directory_id")
-
-    @directory_id.setter
-    def directory_id(self, value: pulumi.Input[str]):
-        pulumi.set(self, "directory_id", value)
-
-    @property
     @pulumi.getter
     def domains(self) -> pulumi.Input[Sequence[pulumi.Input['DomainArgs']]]:
         return pulumi.get(self, "domains")
@@ -69,21 +55,39 @@ class OrganizationArgs:
         pulumi.set(self, "domains", value)
 
     @property
+    @pulumi.getter(name="clientToken")
+    def client_token(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "client_token")
+
+    @client_token.setter
+    def client_token(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "client_token", value)
+
+    @property
+    @pulumi.getter(name="directoryId")
+    def directory_id(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "directory_id")
+
+    @directory_id.setter
+    def directory_id(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "directory_id", value)
+
+    @property
     @pulumi.getter(name="enableInteroperability")
-    def enable_interoperability(self) -> pulumi.Input[bool]:
+    def enable_interoperability(self) -> Optional[pulumi.Input[bool]]:
         return pulumi.get(self, "enable_interoperability")
 
     @enable_interoperability.setter
-    def enable_interoperability(self, value: pulumi.Input[bool]):
+    def enable_interoperability(self, value: Optional[pulumi.Input[bool]]):
         pulumi.set(self, "enable_interoperability", value)
 
     @property
     @pulumi.getter(name="kmsKeyArn")
-    def kms_key_arn(self) -> pulumi.Input[str]:
+    def kms_key_arn(self) -> Optional[pulumi.Input[str]]:
         return pulumi.get(self, "kms_key_arn")
 
     @kms_key_arn.setter
-    def kms_key_arn(self, value: pulumi.Input[str]):
+    def kms_key_arn(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "kms_key_arn", value)
 
 
@@ -145,20 +149,12 @@ class Organization(pulumi.CustomResource):
             if alias is None and not opts.urn:
                 raise TypeError("Missing required property 'alias'")
             __props__.__dict__["alias"] = alias
-            if client_token is None and not opts.urn:
-                raise TypeError("Missing required property 'client_token'")
             __props__.__dict__["client_token"] = client_token
-            if directory_id is None and not opts.urn:
-                raise TypeError("Missing required property 'directory_id'")
             __props__.__dict__["directory_id"] = directory_id
             if domains is None and not opts.urn:
                 raise TypeError("Missing required property 'domains'")
             __props__.__dict__["domains"] = domains
-            if enable_interoperability is None and not opts.urn:
-                raise TypeError("Missing required property 'enable_interoperability'")
             __props__.__dict__["enable_interoperability"] = enable_interoperability
-            if kms_key_arn is None and not opts.urn:
-                raise TypeError("Missing required property 'kms_key_arn'")
             __props__.__dict__["kms_key_arn"] = kms_key_arn
         super(Organization, __self__).__init__(
             'awsworkmail:index:Organization',
@@ -197,12 +193,12 @@ class Organization(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="clientToken")
-    def client_token(self) -> pulumi.Output[str]:
+    def client_token(self) -> pulumi.Output[Optional[str]]:
         return pulumi.get(self, "client_token")
 
     @property
     @pulumi.getter(name="directoryId")
-    def directory_id(self) -> pulumi.Output[str]:
+    def directory_id(self) -> pulumi.Output[Optional[str]]:
         return pulumi.get(self, "directory_id")
 
     @property
@@ -212,11 +208,11 @@ class Organization(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="enableInteroperability")
-    def enable_interoperability(self) -> pulumi.Output[bool]:
+    def enable_interoperability(self) -> pulumi.Output[Optional[bool]]:
         return pulumi.get(self, "enable_interoperability")
 
     @property
     @pulumi.getter(name="kmsKeyArn")
-    def kms_key_arn(self) -> pulumi.Output[str]:
+    def kms_key_arn(self) -> pulumi.Output[Optional[str]]:
         return pulumi.get(self, "kms_key_arn")
 
