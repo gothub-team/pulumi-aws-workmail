@@ -16,6 +16,7 @@
         "index.ts",
         "organization.ts",
         "provider.ts",
+        "random.ts",
         "utilities.ts"
     ]
 }
