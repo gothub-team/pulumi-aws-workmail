@@ -21,11 +21,14 @@ namespace Pulumi.Awsworkmail
         [Output("directoryId")]
         public Output<string?> DirectoryId { get; private set; } = null!;
 
-        [Output("domains")]
-        public Output<ImmutableArray<Outputs.Domain>> Domains { get; private set; } = null!;
+        [Output("domainName")]
+        public Output<string> DomainName { get; private set; } = null!;
 
         [Output("enableInteroperability")]
         public Output<bool?> EnableInteroperability { get; private set; } = null!;
+
+        [Output("hostedZoneId")]
+        public Output<string> HostedZoneId { get; private set; } = null!;
 
         [Output("kmsKeyArn")]
         public Output<string?> KmsKeyArn { get; private set; } = null!;
@@ -85,16 +88,14 @@ namespace Pulumi.Awsworkmail
         [Input("directoryId")]
         public Input<string>? DirectoryId { get; set; }
 
-        [Input("domains", required: true)]
-        private InputList<Inputs.DomainArgs>? _domains;
-        public InputList<Inputs.DomainArgs> Domains
-        {
-            get => _domains ?? (_domains = new InputList<Inputs.DomainArgs>());
-            set => _domains = value;
-        }
+        [Input("domainName", required: true)]
+        public Input<string> DomainName { get; set; } = null!;
 
         [Input("enableInteroperability")]
         public Input<bool>? EnableInteroperability { get; set; }
+
+        [Input("hostedZoneId", required: true)]
+        public Input<string> HostedZoneId { get; set; } = null!;
 
         [Input("kmsKeyArn")]
         public Input<string>? KmsKeyArn { get; set; }

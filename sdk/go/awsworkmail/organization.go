@@ -16,12 +16,13 @@ import (
 type Organization struct {
 	pulumi.CustomResourceState
 
-	Alias                  pulumix.Output[string]                     `pulumi:"alias"`
-	ClientToken            pulumix.Output[*string]                    `pulumi:"clientToken"`
-	DirectoryId            pulumix.Output[*string]                    `pulumi:"directoryId"`
-	Domains                pulumix.GArrayOutput[Domain, DomainOutput] `pulumi:"domains"`
-	EnableInteroperability pulumix.Output[*bool]                      `pulumi:"enableInteroperability"`
-	KmsKeyArn              pulumix.Output[*string]                    `pulumi:"kmsKeyArn"`
+	Alias                  pulumix.Output[string]  `pulumi:"alias"`
+	ClientToken            pulumix.Output[*string] `pulumi:"clientToken"`
+	DirectoryId            pulumix.Output[*string] `pulumi:"directoryId"`
+	DomainName             pulumix.Output[string]  `pulumi:"domainName"`
+	EnableInteroperability pulumix.Output[*bool]   `pulumi:"enableInteroperability"`
+	HostedZoneId           pulumix.Output[string]  `pulumi:"hostedZoneId"`
+	KmsKeyArn              pulumix.Output[*string] `pulumi:"kmsKeyArn"`
 }
 
 // NewOrganization registers a new resource with the given unique name, arguments, and options.
@@ -34,8 +35,11 @@ func NewOrganization(ctx *pulumi.Context,
 	if args.Alias == nil {
 		return nil, errors.New("invalid value for required argument 'Alias'")
 	}
-	if args.Domains == nil {
-		return nil, errors.New("invalid value for required argument 'Domains'")
+	if args.DomainName == nil {
+		return nil, errors.New("invalid value for required argument 'DomainName'")
+	}
+	if args.HostedZoneId == nil {
+		return nil, errors.New("invalid value for required argument 'HostedZoneId'")
 	}
 	opts = internal.PkgResourceDefaultOpts(opts)
 	var resource Organization
@@ -70,12 +74,13 @@ func (OrganizationState) ElementType() reflect.Type {
 }
 
 type organizationArgs struct {
-	Alias                  string   `pulumi:"alias"`
-	ClientToken            *string  `pulumi:"clientToken"`
-	DirectoryId            *string  `pulumi:"directoryId"`
-	Domains                []Domain `pulumi:"domains"`
-	EnableInteroperability *bool    `pulumi:"enableInteroperability"`
-	KmsKeyArn              *string  `pulumi:"kmsKeyArn"`
+	Alias                  string  `pulumi:"alias"`
+	ClientToken            *string `pulumi:"clientToken"`
+	DirectoryId            *string `pulumi:"directoryId"`
+	DomainName             string  `pulumi:"domainName"`
+	EnableInteroperability *bool   `pulumi:"enableInteroperability"`
+	HostedZoneId           string  `pulumi:"hostedZoneId"`
+	KmsKeyArn              *string `pulumi:"kmsKeyArn"`
 }
 
 // The set of arguments for constructing a Organization resource.
@@ -83,8 +88,9 @@ type OrganizationArgs struct {
 	Alias                  pulumix.Input[string]
 	ClientToken            pulumix.Input[*string]
 	DirectoryId            pulumix.Input[*string]
-	Domains                pulumix.Input[[]*DomainArgs]
+	DomainName             pulumix.Input[string]
 	EnableInteroperability pulumix.Input[*bool]
+	HostedZoneId           pulumix.Input[string]
 	KmsKeyArn              pulumix.Input[*string]
 }
 
@@ -127,15 +133,19 @@ func (o OrganizationOutput) DirectoryId() pulumix.Output[*string] {
 	return pulumix.Flatten[*string, pulumix.Output[*string]](value)
 }
 
-func (o OrganizationOutput) Domains() pulumix.GArrayOutput[Domain, DomainOutput] {
-	value := pulumix.Apply[Organization](o, func(v Organization) pulumix.GArrayOutput[Domain, DomainOutput] { return v.Domains })
-	unwrapped := pulumix.Flatten[[]Domain, pulumix.GArrayOutput[Domain, DomainOutput]](value)
-	return pulumix.GArrayOutput[Domain, DomainOutput]{OutputState: unwrapped.OutputState}
+func (o OrganizationOutput) DomainName() pulumix.Output[string] {
+	value := pulumix.Apply[Organization](o, func(v Organization) pulumix.Output[string] { return v.DomainName })
+	return pulumix.Flatten[string, pulumix.Output[string]](value)
 }
 
 func (o OrganizationOutput) EnableInteroperability() pulumix.Output[*bool] {
 	value := pulumix.Apply[Organization](o, func(v Organization) pulumix.Output[*bool] { return v.EnableInteroperability })
 	return pulumix.Flatten[*bool, pulumix.Output[*bool]](value)
+}
+
+func (o OrganizationOutput) HostedZoneId() pulumix.Output[string] {
+	value := pulumix.Apply[Organization](o, func(v Organization) pulumix.Output[string] { return v.HostedZoneId })
+	return pulumix.Flatten[string, pulumix.Output[string]](value)
 }
 
 func (o OrganizationOutput) KmsKeyArn() pulumix.Output[*string] {
