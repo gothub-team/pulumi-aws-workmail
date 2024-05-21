@@ -21,6 +21,8 @@ type Organization struct{}
 
 // Each resource has an input struct, defining what arguments it accepts.
 type OrganizationArgs struct {
+	// The AWS Region. TODO: This should be passed as a pulumi.Provider
+	Region string `pulumi:"region"`
 	// The organization alias.
 	Alias string `pulumi:"alias"`
 	// The domain name.
@@ -54,9 +56,12 @@ func (Organization) Create(ctx p.Context, name string, input OrganizationArgs, p
 	if err != nil {
 		return "", state, err
 	}
+	cfg.Region = input.Region
 
 	// Create the WorkMail service client using the config
 	workmailclient := workmail.NewFromConfig(cfg)
+
+	// Create the organization
 
 	organization, err := workmailclient.CreateOrganization(ctx, &workmail.CreateOrganizationInput{
 		Alias: &input.Alias,
@@ -69,13 +74,20 @@ func (Organization) Create(ctx p.Context, name string, input OrganizationArgs, p
 		ClientToken:            input.ClientToken,
 		DirectoryId:            input.DirectoryId,
 		KmsKeyArn:              input.KmsKeyArn,
-		EnableInteroperability: *input.EnableInteroperability,
+		EnableInteroperability: ifNotNil(input.EnableInteroperability, false),
 	})
 	if err != nil {
 		return "", state, err
 	}
 
 	return *organization.OrganizationId, state, nil
+}
+
+func ifNotNil[T any](ptr *T, def T) T {
+	if ptr != nil {
+		return *ptr
+	}
+	return def
 }
 
 // func Map[T any, U any](f func(T) U) func([]T) []U {

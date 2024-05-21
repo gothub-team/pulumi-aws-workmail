@@ -33,6 +33,9 @@ namespace Pulumi.Awsworkmail
         [Output("kmsKeyArn")]
         public Output<string?> KmsKeyArn { get; private set; } = null!;
 
+        [Output("region")]
+        public Output<string> Region { get; private set; } = null!;
+
 
         /// <summary>
         /// Create a Organization resource with the given unique name, arguments, and options.
@@ -99,6 +102,9 @@ namespace Pulumi.Awsworkmail
 
         [Input("kmsKeyArn")]
         public Input<string>? KmsKeyArn { get; set; }
+
+        [Input("region", required: true)]
+        public Input<string> Region { get; set; } = null!;
 
         public OrganizationArgs()
         {

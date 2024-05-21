@@ -23,6 +23,7 @@ type Organization struct {
 	EnableInteroperability pulumix.Output[*bool]   `pulumi:"enableInteroperability"`
 	HostedZoneId           pulumix.Output[string]  `pulumi:"hostedZoneId"`
 	KmsKeyArn              pulumix.Output[*string] `pulumi:"kmsKeyArn"`
+	Region                 pulumix.Output[string]  `pulumi:"region"`
 }
 
 // NewOrganization registers a new resource with the given unique name, arguments, and options.
@@ -40,6 +41,9 @@ func NewOrganization(ctx *pulumi.Context,
 	}
 	if args.HostedZoneId == nil {
 		return nil, errors.New("invalid value for required argument 'HostedZoneId'")
+	}
+	if args.Region == nil {
+		return nil, errors.New("invalid value for required argument 'Region'")
 	}
 	opts = internal.PkgResourceDefaultOpts(opts)
 	var resource Organization
@@ -81,6 +85,7 @@ type organizationArgs struct {
 	EnableInteroperability *bool   `pulumi:"enableInteroperability"`
 	HostedZoneId           string  `pulumi:"hostedZoneId"`
 	KmsKeyArn              *string `pulumi:"kmsKeyArn"`
+	Region                 string  `pulumi:"region"`
 }
 
 // The set of arguments for constructing a Organization resource.
@@ -92,6 +97,7 @@ type OrganizationArgs struct {
 	EnableInteroperability pulumix.Input[*bool]
 	HostedZoneId           pulumix.Input[string]
 	KmsKeyArn              pulumix.Input[*string]
+	Region                 pulumix.Input[string]
 }
 
 func (OrganizationArgs) ElementType() reflect.Type {
@@ -151,6 +157,11 @@ func (o OrganizationOutput) HostedZoneId() pulumix.Output[string] {
 func (o OrganizationOutput) KmsKeyArn() pulumix.Output[*string] {
 	value := pulumix.Apply[Organization](o, func(v Organization) pulumix.Output[*string] { return v.KmsKeyArn })
 	return pulumix.Flatten[*string, pulumix.Output[*string]](value)
+}
+
+func (o OrganizationOutput) Region() pulumix.Output[string] {
+	value := pulumix.Apply[Organization](o, func(v Organization) pulumix.Output[string] { return v.Region })
+	return pulumix.Flatten[string, pulumix.Output[string]](value)
 }
 
 func init() {

@@ -38,6 +38,7 @@ export class Organization extends pulumi.CustomResource {
     public readonly enableInteroperability!: pulumi.Output<boolean | undefined>;
     public readonly hostedZoneId!: pulumi.Output<string>;
     public readonly kmsKeyArn!: pulumi.Output<string | undefined>;
+    public readonly region!: pulumi.Output<string>;
 
     /**
      * Create a Organization resource with the given unique name, arguments, and options.
@@ -59,6 +60,9 @@ export class Organization extends pulumi.CustomResource {
             if ((!args || args.hostedZoneId === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'hostedZoneId'");
             }
+            if ((!args || args.region === undefined) && !opts.urn) {
+                throw new Error("Missing required property 'region'");
+            }
             resourceInputs["alias"] = args ? args.alias : undefined;
             resourceInputs["clientToken"] = args ? args.clientToken : undefined;
             resourceInputs["directoryId"] = args ? args.directoryId : undefined;
@@ -66,6 +70,7 @@ export class Organization extends pulumi.CustomResource {
             resourceInputs["enableInteroperability"] = args ? args.enableInteroperability : undefined;
             resourceInputs["hostedZoneId"] = args ? args.hostedZoneId : undefined;
             resourceInputs["kmsKeyArn"] = args ? args.kmsKeyArn : undefined;
+            resourceInputs["region"] = args ? args.region : undefined;
         } else {
             resourceInputs["alias"] = undefined /*out*/;
             resourceInputs["clientToken"] = undefined /*out*/;
@@ -74,6 +79,7 @@ export class Organization extends pulumi.CustomResource {
             resourceInputs["enableInteroperability"] = undefined /*out*/;
             resourceInputs["hostedZoneId"] = undefined /*out*/;
             resourceInputs["kmsKeyArn"] = undefined /*out*/;
+            resourceInputs["region"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Organization.__pulumiType, name, resourceInputs, opts);
@@ -91,4 +97,5 @@ export interface OrganizationArgs {
     enableInteroperability?: pulumi.Input<boolean>;
     hostedZoneId: pulumi.Input<string>;
     kmsKeyArn?: pulumi.Input<string>;
+    region: pulumi.Input<string>;
 }

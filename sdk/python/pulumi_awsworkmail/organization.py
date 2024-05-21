@@ -17,6 +17,7 @@ class OrganizationArgs:
                  alias: pulumi.Input[str],
                  domain_name: pulumi.Input[str],
                  hosted_zone_id: pulumi.Input[str],
+                 region: pulumi.Input[str],
                  client_token: Optional[pulumi.Input[str]] = None,
                  directory_id: Optional[pulumi.Input[str]] = None,
                  enable_interoperability: Optional[pulumi.Input[bool]] = None,
@@ -27,6 +28,7 @@ class OrganizationArgs:
         pulumi.set(__self__, "alias", alias)
         pulumi.set(__self__, "domain_name", domain_name)
         pulumi.set(__self__, "hosted_zone_id", hosted_zone_id)
+        pulumi.set(__self__, "region", region)
         if client_token is not None:
             pulumi.set(__self__, "client_token", client_token)
         if directory_id is not None:
@@ -62,6 +64,15 @@ class OrganizationArgs:
     @hosted_zone_id.setter
     def hosted_zone_id(self, value: pulumi.Input[str]):
         pulumi.set(self, "hosted_zone_id", value)
+
+    @property
+    @pulumi.getter
+    def region(self) -> pulumi.Input[str]:
+        return pulumi.get(self, "region")
+
+    @region.setter
+    def region(self, value: pulumi.Input[str]):
+        pulumi.set(self, "region", value)
 
     @property
     @pulumi.getter(name="clientToken")
@@ -112,6 +123,7 @@ class Organization(pulumi.CustomResource):
                  enable_interoperability: Optional[pulumi.Input[bool]] = None,
                  hosted_zone_id: Optional[pulumi.Input[str]] = None,
                  kms_key_arn: Optional[pulumi.Input[str]] = None,
+                 region: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
         Create a Organization resource with the given unique name, props, and options.
@@ -148,6 +160,7 @@ class Organization(pulumi.CustomResource):
                  enable_interoperability: Optional[pulumi.Input[bool]] = None,
                  hosted_zone_id: Optional[pulumi.Input[str]] = None,
                  kms_key_arn: Optional[pulumi.Input[str]] = None,
+                 region: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
@@ -170,6 +183,9 @@ class Organization(pulumi.CustomResource):
                 raise TypeError("Missing required property 'hosted_zone_id'")
             __props__.__dict__["hosted_zone_id"] = hosted_zone_id
             __props__.__dict__["kms_key_arn"] = kms_key_arn
+            if region is None and not opts.urn:
+                raise TypeError("Missing required property 'region'")
+            __props__.__dict__["region"] = region
         super(Organization, __self__).__init__(
             'awsworkmail:index:Organization',
             resource_name,
@@ -199,6 +215,7 @@ class Organization(pulumi.CustomResource):
         __props__.__dict__["enable_interoperability"] = None
         __props__.__dict__["hosted_zone_id"] = None
         __props__.__dict__["kms_key_arn"] = None
+        __props__.__dict__["region"] = None
         return Organization(resource_name, opts=opts, __props__=__props__)
 
     @property
@@ -235,4 +252,9 @@ class Organization(pulumi.CustomResource):
     @pulumi.getter(name="kmsKeyArn")
     def kms_key_arn(self) -> pulumi.Output[Optional[str]]:
         return pulumi.get(self, "kms_key_arn")
+
+    @property
+    @pulumi.getter
+    def region(self) -> pulumi.Output[str]:
+        return pulumi.get(self, "region")
 
