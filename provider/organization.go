@@ -3,7 +3,6 @@ package provider
 import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/workmail"
-	"github.com/aws/aws-sdk-go-v2/service/workmail/types"
 	p "github.com/pulumi/pulumi-go-provider"
 )
 
@@ -62,30 +61,53 @@ func (Organization) Create(ctx p.Context, name string, input OrganizationArgs, p
 	cfg.Region = input.Region
 
 	// Create the WorkMail service client using the config
-	workmailclient := workmail.NewFromConfig(cfg)
+	// workmailclient := workmail.NewFromConfig(cfg)
 
 	// Create the organization
 
-	organization, err := workmailclient.CreateOrganization(ctx, &workmail.CreateOrganizationInput{
-		Alias: &input.Alias,
-		Domains: []types.Domain{
-			{
-				DomainName:   &input.DomainName,
-				HostedZoneId: &input.HostedZoneId,
-			},
-		},
-		ClientToken:            input.ClientToken,
-		DirectoryId:            input.DirectoryId,
-		KmsKeyArn:              input.KmsKeyArn,
-		EnableInteroperability: ifNotNil(input.EnableInteroperability, false),
-	})
-	if err != nil {
-		return "", state, err
-	}
+	// organization, err := workmailclient.CreateOrganization(ctx, &workmail.CreateOrganizationInput{
+	// 	Alias: &input.Alias,
+	// 	Domains: []types.Domain{
+	// 		{
+	// 			DomainName:   &input.DomainName,
+	// 			HostedZoneId: &input.HostedZoneId,
+	// 		},
+	// 	},
+	// 	ClientToken:            input.ClientToken,
+	// 	DirectoryId:            input.DirectoryId,
+	// 	KmsKeyArn:              input.KmsKeyArn,
+	// 	EnableInteroperability: ifNotNil(input.EnableInteroperability, false),
+	// })
+	// if err != nil {
+	// 	return "", state, err
+	// }
 
-	state.OrganizationId = *organization.OrganizationId
+	// // Wait for the organization to be created
+	// for {
+	// 	org, err := workmailclient.DescribeOrganization(ctx, &workmail.DescribeOrganizationInput{
+	// 		OrganizationId: organization.OrganizationId,
+	// 	})
+	// 	fmt.Println(*org.State)
+	// 	if err != nil {
+	// 		return "", state, err
+	// 	}
+	// 	if *org.State == "Active" {
+	// 		break
+	// 	}
+	// 	time.Sleep(5 * time.Second)
+	// }
 
-	return *organization.OrganizationId, state, nil
+	// _, err = workmailclient.UpdateDefaultMailDomain(ctx, &workmail.UpdateDefaultMailDomainInput{
+	// 	OrganizationId: organization.OrganizationId,
+	// 	DomainName:     &input.DomainName,
+	// })
+	// if err != nil {
+	// 	return "", state, err
+	// }
+
+	// state.OrganizationId = *organization.OrganizationId
+
+	return "*organization.OrganizationId", state, nil
 }
 
 func ifNotNil[T any](ptr *T, def T) T {
