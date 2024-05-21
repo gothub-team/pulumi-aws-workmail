@@ -8,6 +8,7 @@ import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
+from . import types as _types
 
 __all__ = ['OrganizationArgs', 'Organization']
 
@@ -187,6 +188,7 @@ class Organization(pulumi.CustomResource):
                 raise TypeError("Missing required property 'region'")
             __props__.__dict__["region"] = region
             __props__.__dict__["organization_id"] = None
+            __props__.__dict__["records"] = None
         super(Organization, __self__).__init__(
             'awsworkmail:index:Organization',
             resource_name,
@@ -217,6 +219,7 @@ class Organization(pulumi.CustomResource):
         __props__.__dict__["hosted_zone_id"] = None
         __props__.__dict__["kms_key_arn"] = None
         __props__.__dict__["organization_id"] = None
+        __props__.__dict__["records"] = None
         __props__.__dict__["region"] = None
         return Organization(resource_name, opts=opts, __props__=__props__)
 
@@ -259,6 +262,11 @@ class Organization(pulumi.CustomResource):
     @pulumi.getter(name="organizationId")
     def organization_id(self) -> pulumi.Output[str]:
         return pulumi.get(self, "organization_id")
+
+    @property
+    @pulumi.getter
+    def records(self) -> pulumi.Output[Sequence['_types.outputs.DnsRecord']]:
+        return pulumi.get(self, "records")
 
     @property
     @pulumi.getter

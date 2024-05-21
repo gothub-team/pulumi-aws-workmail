@@ -2,6 +2,8 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
+import * as inputs from "./types/input";
+import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
 export class Organization extends pulumi.CustomResource {
@@ -39,6 +41,7 @@ export class Organization extends pulumi.CustomResource {
     public readonly hostedZoneId!: pulumi.Output<string>;
     public readonly kmsKeyArn!: pulumi.Output<string | undefined>;
     public /*out*/ readonly organizationId!: pulumi.Output<string>;
+    public /*out*/ readonly records!: pulumi.Output<outputs.types.DnsRecord[]>;
     public readonly region!: pulumi.Output<string>;
 
     /**
@@ -73,6 +76,7 @@ export class Organization extends pulumi.CustomResource {
             resourceInputs["kmsKeyArn"] = args ? args.kmsKeyArn : undefined;
             resourceInputs["region"] = args ? args.region : undefined;
             resourceInputs["organizationId"] = undefined /*out*/;
+            resourceInputs["records"] = undefined /*out*/;
         } else {
             resourceInputs["alias"] = undefined /*out*/;
             resourceInputs["clientToken"] = undefined /*out*/;
@@ -82,6 +86,7 @@ export class Organization extends pulumi.CustomResource {
             resourceInputs["hostedZoneId"] = undefined /*out*/;
             resourceInputs["kmsKeyArn"] = undefined /*out*/;
             resourceInputs["organizationId"] = undefined /*out*/;
+            resourceInputs["records"] = undefined /*out*/;
             resourceInputs["region"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
