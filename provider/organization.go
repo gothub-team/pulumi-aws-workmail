@@ -96,20 +96,30 @@ func ifNotNil[T any](ptr *T, def T) T {
 }
 
 // The Delete method will run when the resource is deleted.
-func (c *Organization) Delete(ctx p.Context, id string, props OrganizationState) error {
+func (Organization) Delete(ctx p.Context, id string, props OrganizationState) error {
 	cfg, err := config.LoadDefaultConfig(ctx)
 	if err != nil {
 		return err
 	}
+	cfg.Region = props.Region
 
 	// Create the WorkMail service client using the config
 	workmailclient := workmail.NewFromConfig(cfg)
 
-	// Delete the organization
-	_, err = workmailclient.DeleteOrganization(ctx, &workmail.DeleteOrganizationInput{
+	organization, err := workmailclient.DescribeOrganization(ctx, &workmail.DescribeOrganizationInput{
 		OrganizationId: &props.OrganizationId,
-		// ForceDelete:    true,
 	})
+	if err != nil {
+		return err
+	}
+	if *organization.State != "Deleted" {
+		// Delete the organization
+		_, err = workmailclient.DeleteOrganization(ctx, &workmail.DeleteOrganizationInput{
+			OrganizationId:  &props.OrganizationId,
+			DeleteDirectory: true,
+			ForceDelete:     true,
+		})
+	}
 	return err
 }
 
