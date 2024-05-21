@@ -8,7 +8,7 @@ import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
-from . import types as _types
+from . import outputs
 
 __all__ = ['OrganizationArgs', 'Organization']
 
@@ -265,7 +265,7 @@ class Organization(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def records(self) -> pulumi.Output[Sequence['_types.outputs.DnsRecord']]:
+    def records(self) -> pulumi.Output[Sequence['outputs.DnsRecord']]:
         return pulumi.get(self, "records")
 
     @property

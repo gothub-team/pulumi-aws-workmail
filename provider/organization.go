@@ -50,7 +50,13 @@ type OrganizationState struct {
 	OrganizationId string `pulumi:"organizationId"`
 
 	// Mail domain records.
-	Records []types.DnsRecord `pulumi:"records"`
+	Records []DnsRecord `pulumi:"records"`
+}
+
+type DnsRecord struct {
+	Type     string
+	Hostname string
+	Value    string
 }
 
 // All resources must implement Create at a minimum.
@@ -118,7 +124,13 @@ func (Organization) Create(ctx p.Context, name string, input OrganizationArgs, p
 	}
 
 	state.OrganizationId = *organization.OrganizationId
-	state.Records = mailDomain.Records
+	state.Records = Map(func(record types.DnsRecord) DnsRecord {
+		return DnsRecord{
+			Type:     *record.Type,
+			Hostname: *record.Hostname,
+			Value:    *record.Value,
+		}
+	})(mailDomain.Records)
 
 	return "*organization.OrganizationId", state, nil
 }
@@ -158,12 +170,12 @@ func (Organization) Delete(ctx p.Context, id string, props OrganizationState) er
 	return err
 }
 
-// func Map[T any, U any](f func(T) U) func([]T) []U {
-// 	return func(slice []T) []U {
-// 		newSlice := make([]U, len(slice))
-// 		for i, value := range slice {
-// 			newSlice[i] = f(value)
-// 		}
-// 		return newSlice
-// 	}
-// }
+func Map[T any, U any](f func(T) U) func([]T) []U {
+	return func(slice []T) []U {
+		newSlice := make([]U, len(slice))
+		for i, value := range slice {
+			newSlice[i] = f(value)
+		}
+		return newSlice
+	}
+}

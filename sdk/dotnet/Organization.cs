@@ -37,7 +37,7 @@ namespace Pulumi.Awsworkmail
         public Output<string> OrganizationId { get; private set; } = null!;
 
         [Output("records")]
-        public Output<ImmutableArray<Pulumi.Awsworkmail.Types.Outputs.DnsRecord>> Records { get; private set; } = null!;
+        public Output<ImmutableArray<Outputs.DnsRecord>> Records { get; private set; } = null!;
 
         [Output("region")]
         public Output<string> Region { get; private set; } = null!;

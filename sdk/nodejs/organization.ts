@@ -41,7 +41,7 @@ export class Organization extends pulumi.CustomResource {
     public readonly hostedZoneId!: pulumi.Output<string>;
     public readonly kmsKeyArn!: pulumi.Output<string | undefined>;
     public /*out*/ readonly organizationId!: pulumi.Output<string>;
-    public /*out*/ readonly records!: pulumi.Output<outputs.types.DnsRecord[]>;
+    public /*out*/ readonly records!: pulumi.Output<outputs.DnsRecord[]>;
     public readonly region!: pulumi.Output<string>;
 
     /**

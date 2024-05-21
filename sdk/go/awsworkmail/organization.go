@@ -9,7 +9,6 @@ import (
 
 	"errors"
 	"github.com/gothub-team/pulumi-awsworkmail/sdk/go/awsworkmail/internal"
-	"github.com/gothub-team/pulumi-awsworkmail/sdk/go/awsworkmail/types"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 )
@@ -17,16 +16,16 @@ import (
 type Organization struct {
 	pulumi.CustomResourceState
 
-	Alias                  pulumix.Output[string]                                       `pulumi:"alias"`
-	ClientToken            pulumix.Output[*string]                                      `pulumi:"clientToken"`
-	DirectoryId            pulumix.Output[*string]                                      `pulumi:"directoryId"`
-	DomainName             pulumix.Output[string]                                       `pulumi:"domainName"`
-	EnableInteroperability pulumix.Output[*bool]                                        `pulumi:"enableInteroperability"`
-	HostedZoneId           pulumix.Output[string]                                       `pulumi:"hostedZoneId"`
-	KmsKeyArn              pulumix.Output[*string]                                      `pulumi:"kmsKeyArn"`
-	OrganizationId         pulumix.Output[string]                                       `pulumi:"organizationId"`
-	Records                pulumix.GArrayOutput[types.DnsRecord, types.DnsRecordOutput] `pulumi:"records"`
-	Region                 pulumix.Output[string]                                       `pulumi:"region"`
+	Alias                  pulumix.Output[string]                           `pulumi:"alias"`
+	ClientToken            pulumix.Output[*string]                          `pulumi:"clientToken"`
+	DirectoryId            pulumix.Output[*string]                          `pulumi:"directoryId"`
+	DomainName             pulumix.Output[string]                           `pulumi:"domainName"`
+	EnableInteroperability pulumix.Output[*bool]                            `pulumi:"enableInteroperability"`
+	HostedZoneId           pulumix.Output[string]                           `pulumi:"hostedZoneId"`
+	KmsKeyArn              pulumix.Output[*string]                          `pulumi:"kmsKeyArn"`
+	OrganizationId         pulumix.Output[string]                           `pulumi:"organizationId"`
+	Records                pulumix.GArrayOutput[DnsRecord, DnsRecordOutput] `pulumi:"records"`
+	Region                 pulumix.Output[string]                           `pulumi:"region"`
 }
 
 // NewOrganization registers a new resource with the given unique name, arguments, and options.
@@ -167,10 +166,10 @@ func (o OrganizationOutput) OrganizationId() pulumix.Output[string] {
 	return pulumix.Flatten[string, pulumix.Output[string]](value)
 }
 
-func (o OrganizationOutput) Records() pulumix.GArrayOutput[types.DnsRecord, types.DnsRecordOutput] {
-	value := pulumix.Apply[Organization](o, func(v Organization) pulumix.GArrayOutput[types.DnsRecord, types.DnsRecordOutput] { return v.Records })
-	unwrapped := pulumix.Flatten[[]types.DnsRecord, pulumix.GArrayOutput[types.DnsRecord, types.DnsRecordOutput]](value)
-	return pulumix.GArrayOutput[types.DnsRecord, types.DnsRecordOutput]{OutputState: unwrapped.OutputState}
+func (o OrganizationOutput) Records() pulumix.GArrayOutput[DnsRecord, DnsRecordOutput] {
+	value := pulumix.Apply[Organization](o, func(v Organization) pulumix.GArrayOutput[DnsRecord, DnsRecordOutput] { return v.Records })
+	unwrapped := pulumix.Flatten[[]DnsRecord, pulumix.GArrayOutput[DnsRecord, DnsRecordOutput]](value)
+	return pulumix.GArrayOutput[DnsRecord, DnsRecordOutput]{OutputState: unwrapped.OutputState}
 }
 
 func (o OrganizationOutput) Region() pulumix.Output[string] {
