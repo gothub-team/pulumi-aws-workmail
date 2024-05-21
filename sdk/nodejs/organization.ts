@@ -38,6 +38,7 @@ export class Organization extends pulumi.CustomResource {
     public readonly enableInteroperability!: pulumi.Output<boolean | undefined>;
     public readonly hostedZoneId!: pulumi.Output<string>;
     public readonly kmsKeyArn!: pulumi.Output<string | undefined>;
+    public /*out*/ readonly organizationId!: pulumi.Output<string>;
     public readonly region!: pulumi.Output<string>;
 
     /**
@@ -71,6 +72,7 @@ export class Organization extends pulumi.CustomResource {
             resourceInputs["hostedZoneId"] = args ? args.hostedZoneId : undefined;
             resourceInputs["kmsKeyArn"] = args ? args.kmsKeyArn : undefined;
             resourceInputs["region"] = args ? args.region : undefined;
+            resourceInputs["organizationId"] = undefined /*out*/;
         } else {
             resourceInputs["alias"] = undefined /*out*/;
             resourceInputs["clientToken"] = undefined /*out*/;
@@ -79,6 +81,7 @@ export class Organization extends pulumi.CustomResource {
             resourceInputs["enableInteroperability"] = undefined /*out*/;
             resourceInputs["hostedZoneId"] = undefined /*out*/;
             resourceInputs["kmsKeyArn"] = undefined /*out*/;
+            resourceInputs["organizationId"] = undefined /*out*/;
             resourceInputs["region"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);

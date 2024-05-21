@@ -33,6 +33,9 @@ namespace Pulumi.Awsworkmail
         [Output("kmsKeyArn")]
         public Output<string?> KmsKeyArn { get; private set; } = null!;
 
+        [Output("organizationId")]
+        public Output<string> OrganizationId { get; private set; } = null!;
+
         [Output("region")]
         public Output<string> Region { get; private set; } = null!;
 

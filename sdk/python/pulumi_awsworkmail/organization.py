@@ -186,6 +186,7 @@ class Organization(pulumi.CustomResource):
             if region is None and not opts.urn:
                 raise TypeError("Missing required property 'region'")
             __props__.__dict__["region"] = region
+            __props__.__dict__["organization_id"] = None
         super(Organization, __self__).__init__(
             'awsworkmail:index:Organization',
             resource_name,
@@ -215,6 +216,7 @@ class Organization(pulumi.CustomResource):
         __props__.__dict__["enable_interoperability"] = None
         __props__.__dict__["hosted_zone_id"] = None
         __props__.__dict__["kms_key_arn"] = None
+        __props__.__dict__["organization_id"] = None
         __props__.__dict__["region"] = None
         return Organization(resource_name, opts=opts, __props__=__props__)
 
@@ -252,6 +254,11 @@ class Organization(pulumi.CustomResource):
     @pulumi.getter(name="kmsKeyArn")
     def kms_key_arn(self) -> pulumi.Output[Optional[str]]:
         return pulumi.get(self, "kms_key_arn")
+
+    @property
+    @pulumi.getter(name="organizationId")
+    def organization_id(self) -> pulumi.Output[str]:
+        return pulumi.get(self, "organization_id")
 
     @property
     @pulumi.getter

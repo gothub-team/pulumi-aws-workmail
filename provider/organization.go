@@ -43,6 +43,9 @@ type OrganizationArgs struct {
 type OrganizationState struct {
 	// It is generally a good idea to embed args in outputs, but it isn't strictly necessary.
 	OrganizationArgs
+
+	// The organization id.
+	OrganizationId string `pulumi:"organizationId"`
 }
 
 // All resources must implement Create at a minimum.
@@ -80,6 +83,8 @@ func (Organization) Create(ctx p.Context, name string, input OrganizationArgs, p
 		return "", state, err
 	}
 
+	state.OrganizationId = *organization.OrganizationId
+
 	return *organization.OrganizationId, state, nil
 }
 
@@ -88,6 +93,24 @@ func ifNotNil[T any](ptr *T, def T) T {
 		return *ptr
 	}
 	return def
+}
+
+// The Delete method will run when the resource is deleted.
+func (c *Organization) Delete(ctx p.Context, id string, props OrganizationState) error {
+	cfg, err := config.LoadDefaultConfig(ctx)
+	if err != nil {
+		return err
+	}
+
+	// Create the WorkMail service client using the config
+	workmailclient := workmail.NewFromConfig(cfg)
+
+	// Delete the organization
+	_, err = workmailclient.DeleteOrganization(ctx, &workmail.DeleteOrganizationInput{
+		OrganizationId: &props.OrganizationId,
+		// ForceDelete:    true,
+	})
+	return err
 }
 
 // func Map[T any, U any](f func(T) U) func([]T) []U {

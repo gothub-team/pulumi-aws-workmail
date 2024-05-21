@@ -23,6 +23,7 @@ type Organization struct {
 	EnableInteroperability pulumix.Output[*bool]   `pulumi:"enableInteroperability"`
 	HostedZoneId           pulumix.Output[string]  `pulumi:"hostedZoneId"`
 	KmsKeyArn              pulumix.Output[*string] `pulumi:"kmsKeyArn"`
+	OrganizationId         pulumix.Output[string]  `pulumi:"organizationId"`
 	Region                 pulumix.Output[string]  `pulumi:"region"`
 }
 
@@ -157,6 +158,11 @@ func (o OrganizationOutput) HostedZoneId() pulumix.Output[string] {
 func (o OrganizationOutput) KmsKeyArn() pulumix.Output[*string] {
 	value := pulumix.Apply[Organization](o, func(v Organization) pulumix.Output[*string] { return v.KmsKeyArn })
 	return pulumix.Flatten[*string, pulumix.Output[*string]](value)
+}
+
+func (o OrganizationOutput) OrganizationId() pulumix.Output[string] {
+	value := pulumix.Apply[Organization](o, func(v Organization) pulumix.Output[string] { return v.OrganizationId })
+	return pulumix.Flatten[string, pulumix.Output[string]](value)
 }
 
 func (o OrganizationOutput) Region() pulumix.Output[string] {
