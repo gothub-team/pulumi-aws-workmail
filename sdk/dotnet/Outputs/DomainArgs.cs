@@ -7,15 +7,23 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Awsworkmail.Types.Outputs
+namespace Pulumi.Awsworkmail.Outputs
 {
 
     [OutputType]
-    public sealed class Domain
+    public sealed class DomainArgs
     {
+        public readonly string DomainName;
+        public readonly string HostedZoneId;
+
         [OutputConstructor]
-        private Domain()
+        private DomainArgs(
+            string domainName,
+
+            string hostedZoneId)
         {
+            DomainName = domainName;
+            HostedZoneId = hostedZoneId;
         }
     }
 }

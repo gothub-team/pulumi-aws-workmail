@@ -7,14 +7,8 @@ import typing
 # Export this package's modules as members:
 from .organization import *
 from .provider import *
-
-# Make subpackages available:
-if typing.TYPE_CHECKING:
-    import pulumi_awsworkmail.types as __types
-    types = __types
-else:
-    types = _utilities.lazy_import('pulumi_awsworkmail.types')
-
+from ._inputs import *
+from . import outputs
 _utilities.register(
     resource_modules="""
 [

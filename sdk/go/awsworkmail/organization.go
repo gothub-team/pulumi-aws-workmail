@@ -9,7 +9,6 @@ import (
 
 	"errors"
 	"github.com/gothub-team/pulumi-awsworkmail/sdk/go/awsworkmail/internal"
-	"github.com/gothub-team/pulumi-awsworkmail/sdk/go/awsworkmail/types"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 )
@@ -17,12 +16,12 @@ import (
 type Organization struct {
 	pulumi.CustomResourceState
 
-	Alias                  pulumix.Output[string]                                 `pulumi:"alias"`
-	ClientToken            pulumix.Output[string]                                 `pulumi:"clientToken"`
-	DirectoryId            pulumix.Output[string]                                 `pulumi:"directoryId"`
-	Domains                pulumix.GArrayOutput[types.Domain, types.DomainOutput] `pulumi:"domains"`
-	EnableInteroperability pulumix.Output[bool]                                   `pulumi:"enableInteroperability"`
-	KmsKeyArn              pulumix.Output[string]                                 `pulumi:"kmsKeyArn"`
+	Alias                  pulumix.Output[string]                             `pulumi:"alias"`
+	ClientToken            pulumix.Output[string]                             `pulumi:"clientToken"`
+	DirectoryId            pulumix.Output[string]                             `pulumi:"directoryId"`
+	Domains                pulumix.GArrayOutput[DomainArgs, DomainArgsOutput] `pulumi:"domains"`
+	EnableInteroperability pulumix.Output[bool]                               `pulumi:"enableInteroperability"`
+	KmsKeyArn              pulumix.Output[string]                             `pulumi:"kmsKeyArn"`
 }
 
 // NewOrganization registers a new resource with the given unique name, arguments, and options.
@@ -83,12 +82,12 @@ func (OrganizationState) ElementType() reflect.Type {
 }
 
 type organizationArgs struct {
-	Alias                  string         `pulumi:"alias"`
-	ClientToken            string         `pulumi:"clientToken"`
-	DirectoryId            string         `pulumi:"directoryId"`
-	Domains                []types.Domain `pulumi:"domains"`
-	EnableInteroperability bool           `pulumi:"enableInteroperability"`
-	KmsKeyArn              string         `pulumi:"kmsKeyArn"`
+	Alias                  string       `pulumi:"alias"`
+	ClientToken            string       `pulumi:"clientToken"`
+	DirectoryId            string       `pulumi:"directoryId"`
+	Domains                []DomainArgs `pulumi:"domains"`
+	EnableInteroperability bool         `pulumi:"enableInteroperability"`
+	KmsKeyArn              string       `pulumi:"kmsKeyArn"`
 }
 
 // The set of arguments for constructing a Organization resource.
@@ -96,7 +95,7 @@ type OrganizationArgs struct {
 	Alias                  pulumix.Input[string]
 	ClientToken            pulumix.Input[string]
 	DirectoryId            pulumix.Input[string]
-	Domains                pulumix.Input[[]*types.DomainArgs]
+	Domains                pulumix.Input[[]*DomainArgsArgs]
 	EnableInteroperability pulumix.Input[bool]
 	KmsKeyArn              pulumix.Input[string]
 }
@@ -140,10 +139,10 @@ func (o OrganizationOutput) DirectoryId() pulumix.Output[string] {
 	return pulumix.Flatten[string, pulumix.Output[string]](value)
 }
 
-func (o OrganizationOutput) Domains() pulumix.GArrayOutput[types.Domain, types.DomainOutput] {
-	value := pulumix.Apply[Organization](o, func(v Organization) pulumix.GArrayOutput[types.Domain, types.DomainOutput] { return v.Domains })
-	unwrapped := pulumix.Flatten[[]types.Domain, pulumix.GArrayOutput[types.Domain, types.DomainOutput]](value)
-	return pulumix.GArrayOutput[types.Domain, types.DomainOutput]{OutputState: unwrapped.OutputState}
+func (o OrganizationOutput) Domains() pulumix.GArrayOutput[DomainArgs, DomainArgsOutput] {
+	value := pulumix.Apply[Organization](o, func(v Organization) pulumix.GArrayOutput[DomainArgs, DomainArgsOutput] { return v.Domains })
+	unwrapped := pulumix.Flatten[[]DomainArgs, pulumix.GArrayOutput[DomainArgs, DomainArgsOutput]](value)
+	return pulumix.GArrayOutput[DomainArgs, DomainArgsOutput]{OutputState: unwrapped.OutputState}
 }
 
 func (o OrganizationOutput) EnableInteroperability() pulumix.Output[bool] {

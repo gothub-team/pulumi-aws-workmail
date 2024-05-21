@@ -24,7 +24,7 @@ type OrganizationArgs struct {
 	// The organization alias.
 	Alias string `pulumi:"alias"`
 	// The email domains to associate with the organization.
-	Domains []types.Domain `pulumi:"domains"`
+	Domains []DomainArgs `pulumi:"domains"`
 	// The idempotency token associated with the request.
 	ClientToken *string `pulumi:"clientToken"`
 	// The AWS Directory Service directory ID.
@@ -33,6 +33,13 @@ type OrganizationArgs struct {
 	KmsKeyArn *string `pulumi:"kmsKeyArn"`
 	// When true , allows organization interoperability between WorkMail and Microsoft Exchange. If true , you must include a AD Connector directory ID in the request.
 	EnableInteroperability bool `pulumi:"enableInteroperability"`
+}
+
+type DomainArgs struct {
+	// The domain name.
+	DomainName string `pulumi:"domainName"`
+	// The hosted zone id for the domain.
+	HostedZoneId string `pulumi:"hostedZoneId"`
 }
 
 // Each resource has a state, describing the fields that exist on the created resource.
@@ -57,8 +64,13 @@ func (Organization) Create(ctx p.Context, name string, input OrganizationArgs, p
 	workmailclient := workmail.NewFromConfig(cfg)
 
 	organization, err := workmailclient.CreateOrganization(ctx, &workmail.CreateOrganizationInput{
-		Alias:                  &input.Alias,
-		Domains:                input.Domains,
+		Alias: &input.Alias,
+		Domains: Map(func(domain DomainArgs) types.Domain {
+			return types.Domain{
+				DomainName:   &domain.DomainName,
+				HostedZoneId: &domain.HostedZoneId,
+			}
+		})(input.Domains),
 		ClientToken:            input.ClientToken,
 		DirectoryId:            input.DirectoryId,
 		KmsKeyArn:              input.KmsKeyArn,
@@ -69,4 +81,14 @@ func (Organization) Create(ctx p.Context, name string, input OrganizationArgs, p
 	}
 
 	return *organization.OrganizationId, state, nil
+}
+
+func Map[T any, U any](f func(T) U) func([]T) []U {
+	return func(slice []T) []U {
+		newSlice := make([]U, len(slice))
+		for i, value := range slice {
+			newSlice[i] = f(value)
+		}
+		return newSlice
+	}
 }
