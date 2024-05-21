@@ -13,9 +13,21 @@ namespace Pulumi.Awsworkmail.Outputs
     [OutputType]
     public sealed class DnsRecord
     {
+        public readonly string Hostname;
+        public readonly string Type;
+        public readonly string Value;
+
         [OutputConstructor]
-        private DnsRecord()
+        private DnsRecord(
+            string hostname,
+
+            string type,
+
+            string value)
         {
+            Hostname = hostname;
+            Type = type;
+            Value = value;
         }
     }
 }

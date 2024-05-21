@@ -15,6 +15,9 @@ import (
 var _ = internal.GetEnvOrDefault
 
 type DnsRecord struct {
+	Hostname string `pulumi:"hostname"`
+	Type     string `pulumi:"type"`
+	Value    string `pulumi:"value"`
 }
 
 type DnsRecordOutput struct{ *pulumi.OutputState }
@@ -35,6 +38,18 @@ func (o DnsRecordOutput) ToOutput(ctx context.Context) pulumix.Output[DnsRecord]
 	return pulumix.Output[DnsRecord]{
 		OutputState: o.OutputState,
 	}
+}
+
+func (o DnsRecordOutput) Hostname() pulumix.Output[string] {
+	return pulumix.Apply[DnsRecord](o, func(v DnsRecord) string { return v.Hostname })
+}
+
+func (o DnsRecordOutput) Type() pulumix.Output[string] {
+	return pulumix.Apply[DnsRecord](o, func(v DnsRecord) string { return v.Type })
+}
+
+func (o DnsRecordOutput) Value() pulumix.Output[string] {
+	return pulumix.Apply[DnsRecord](o, func(v DnsRecord) string { return v.Value })
 }
 
 func init() {

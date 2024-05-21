@@ -6,5 +6,8 @@ import * as inputs from "../types/input";
 import * as outputs from "../types/output";
 
 export interface DnsRecord {
+    hostname: string;
+    type: string;
+    value: string;
 }
 

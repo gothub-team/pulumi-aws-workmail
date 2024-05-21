@@ -54,9 +54,9 @@ type OrganizationState struct {
 }
 
 type DnsRecord struct {
-	Type     string
-	Hostname string
-	Value    string
+	Type     string `pulumi:"type"`
+	Hostname string `pulumi:"hostname"`
+	Value    string `pulumi:"value"`
 }
 
 // All resources must implement Create at a minimum.

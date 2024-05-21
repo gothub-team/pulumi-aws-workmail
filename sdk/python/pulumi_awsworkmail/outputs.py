@@ -15,7 +15,27 @@ __all__ = [
 
 @pulumi.output_type
 class DnsRecord(dict):
-    def __init__(__self__):
-        pass
+    def __init__(__self__, *,
+                 hostname: str,
+                 type: str,
+                 value: str):
+        pulumi.set(__self__, "hostname", hostname)
+        pulumi.set(__self__, "type", type)
+        pulumi.set(__self__, "value", value)
+
+    @property
+    @pulumi.getter
+    def hostname(self) -> str:
+        return pulumi.get(self, "hostname")
+
+    @property
+    @pulumi.getter
+    def type(self) -> str:
+        return pulumi.get(self, "type")
+
+    @property
+    @pulumi.getter
+    def value(self) -> str:
+        return pulumi.get(self, "value")
 
 
