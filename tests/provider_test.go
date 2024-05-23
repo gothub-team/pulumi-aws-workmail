@@ -100,6 +100,34 @@ func TestOrganization(t *testing.T) {
 	})
 }
 
+func TestUser(t *testing.T) {
+	prov := provider()
+
+	Convey("When creating a mail user", t, func() {
+		user, err := prov.Create(p.CreateRequest{
+			Urn: urn("User"),
+			Properties: resource.PropertyMap{
+				"region":   resource.NewStringProperty("eu-west-1"),
+				"domain":   resource.NewStringProperty("dev.gothub.io"),
+				"username": resource.NewStringProperty("info"),
+				"password": resource.NewStringProperty("test-password"),
+			},
+			Preview: false,
+		})
+
+		So(err, ShouldBeNil)
+		So(user.Properties["userId"].StringValue(), ShouldNotBeEmpty)
+
+		// err = prov.Delete(p.DeleteRequest{
+		// 	Urn:        urn("User"),
+		// 	Properties: user.Properties,
+		// 	ID:         user.ID,
+		// })
+
+		So(err, ShouldBeNil)
+	})
+}
+
 // urn is a helper function to build an urn for running integration tests.
 func urn(typ string) resource.URN {
 	return resource.NewURN("stack", "proj", "",
