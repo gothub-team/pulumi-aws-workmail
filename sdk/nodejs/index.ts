@@ -5,6 +5,11 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
 // Export members:
+export { DefaultDomainArgs } from "./defaultDomain";
+export type DefaultDomain = import("./defaultDomain").DefaultDomain;
+export const DefaultDomain: typeof import("./defaultDomain").DefaultDomain = null as any;
+utilities.lazyLoad(exports, ["DefaultDomain"], () => require("./defaultDomain"));
+
 export { OrganizationArgs } from "./organization";
 export type Organization = import("./organization").Organization;
 export const Organization: typeof import("./organization").Organization = null as any;
@@ -32,6 +37,8 @@ const _module = {
     version: utilities.getVersion(),
     construct: (name: string, type: string, urn: string): pulumi.Resource => {
         switch (type) {
+            case "awsworkmail:index:DefaultDomain":
+                return new DefaultDomain(name, <any>undefined, { urn })
             case "awsworkmail:index:Organization":
                 return new Organization(name, <any>undefined, { urn })
             case "awsworkmail:index:Random":

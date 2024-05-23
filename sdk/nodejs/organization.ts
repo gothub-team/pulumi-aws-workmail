@@ -2,8 +2,6 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
-import * as inputs from "./types/input";
-import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
 export class Organization extends pulumi.CustomResource {
@@ -36,12 +34,9 @@ export class Organization extends pulumi.CustomResource {
     public readonly alias!: pulumi.Output<string>;
     public readonly clientToken!: pulumi.Output<string | undefined>;
     public readonly directoryId!: pulumi.Output<string | undefined>;
-    public readonly domainName!: pulumi.Output<string>;
     public readonly enableInteroperability!: pulumi.Output<boolean | undefined>;
-    public readonly hostedZoneId!: pulumi.Output<string>;
     public readonly kmsKeyArn!: pulumi.Output<string | undefined>;
     public /*out*/ readonly organizationId!: pulumi.Output<string>;
-    public /*out*/ readonly records!: pulumi.Output<outputs.DnsRecord[]>;
     public readonly region!: pulumi.Output<string>;
 
     /**
@@ -58,35 +53,23 @@ export class Organization extends pulumi.CustomResource {
             if ((!args || args.alias === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'alias'");
             }
-            if ((!args || args.domainName === undefined) && !opts.urn) {
-                throw new Error("Missing required property 'domainName'");
-            }
-            if ((!args || args.hostedZoneId === undefined) && !opts.urn) {
-                throw new Error("Missing required property 'hostedZoneId'");
-            }
             if ((!args || args.region === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'region'");
             }
             resourceInputs["alias"] = args ? args.alias : undefined;
             resourceInputs["clientToken"] = args ? args.clientToken : undefined;
             resourceInputs["directoryId"] = args ? args.directoryId : undefined;
-            resourceInputs["domainName"] = args ? args.domainName : undefined;
             resourceInputs["enableInteroperability"] = args ? args.enableInteroperability : undefined;
-            resourceInputs["hostedZoneId"] = args ? args.hostedZoneId : undefined;
             resourceInputs["kmsKeyArn"] = args ? args.kmsKeyArn : undefined;
             resourceInputs["region"] = args ? args.region : undefined;
             resourceInputs["organizationId"] = undefined /*out*/;
-            resourceInputs["records"] = undefined /*out*/;
         } else {
             resourceInputs["alias"] = undefined /*out*/;
             resourceInputs["clientToken"] = undefined /*out*/;
             resourceInputs["directoryId"] = undefined /*out*/;
-            resourceInputs["domainName"] = undefined /*out*/;
             resourceInputs["enableInteroperability"] = undefined /*out*/;
-            resourceInputs["hostedZoneId"] = undefined /*out*/;
             resourceInputs["kmsKeyArn"] = undefined /*out*/;
             resourceInputs["organizationId"] = undefined /*out*/;
-            resourceInputs["records"] = undefined /*out*/;
             resourceInputs["region"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
@@ -101,9 +84,7 @@ export interface OrganizationArgs {
     alias: pulumi.Input<string>;
     clientToken?: pulumi.Input<string>;
     directoryId?: pulumi.Input<string>;
-    domainName: pulumi.Input<string>;
     enableInteroperability?: pulumi.Input<boolean>;
-    hostedZoneId: pulumi.Input<string>;
     kmsKeyArn?: pulumi.Input<string>;
     region: pulumi.Input<string>;
 }

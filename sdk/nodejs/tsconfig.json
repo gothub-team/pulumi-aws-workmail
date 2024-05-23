@@ -13,6 +13,7 @@
         "strict": true
     },
     "files": [
+        "defaultDomain.ts",
         "index.ts",
         "organization.ts",
         "provider.ts",

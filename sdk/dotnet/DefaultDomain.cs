@@ -9,45 +9,39 @@ using Pulumi.Serialization;
 
 namespace Pulumi.Awsworkmail
 {
-    [AwsworkmailResourceType("awsworkmail:index:Organization")]
-    public partial class Organization : global::Pulumi.CustomResource
+    [AwsworkmailResourceType("awsworkmail:index:DefaultDomain")]
+    public partial class DefaultDomain : global::Pulumi.CustomResource
     {
-        [Output("alias")]
-        public Output<string> Alias { get; private set; } = null!;
-
         [Output("clientToken")]
         public Output<string?> ClientToken { get; private set; } = null!;
 
-        [Output("directoryId")]
-        public Output<string?> DirectoryId { get; private set; } = null!;
-
-        [Output("enableInteroperability")]
-        public Output<bool?> EnableInteroperability { get; private set; } = null!;
-
-        [Output("kmsKeyArn")]
-        public Output<string?> KmsKeyArn { get; private set; } = null!;
+        [Output("domainName")]
+        public Output<string> DomainName { get; private set; } = null!;
 
         [Output("organizationId")]
         public Output<string> OrganizationId { get; private set; } = null!;
+
+        [Output("records")]
+        public Output<ImmutableArray<Outputs.DnsRecord>> Records { get; private set; } = null!;
 
         [Output("region")]
         public Output<string> Region { get; private set; } = null!;
 
 
         /// <summary>
-        /// Create a Organization resource with the given unique name, arguments, and options.
+        /// Create a DefaultDomain resource with the given unique name, arguments, and options.
         /// </summary>
         ///
         /// <param name="name">The unique name of the resource</param>
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
-        public Organization(string name, OrganizationArgs args, CustomResourceOptions? options = null)
-            : base("awsworkmail:index:Organization", name, args ?? new OrganizationArgs(), MakeResourceOptions(options, ""))
+        public DefaultDomain(string name, DefaultDomainArgs args, CustomResourceOptions? options = null)
+            : base("awsworkmail:index:DefaultDomain", name, args ?? new DefaultDomainArgs(), MakeResourceOptions(options, ""))
         {
         }
 
-        private Organization(string name, Input<string> id, CustomResourceOptions? options = null)
-            : base("awsworkmail:index:Organization", name, null, MakeResourceOptions(options, id))
+        private DefaultDomain(string name, Input<string> id, CustomResourceOptions? options = null)
+            : base("awsworkmail:index:DefaultDomain", name, null, MakeResourceOptions(options, id))
         {
         }
 
@@ -64,42 +58,36 @@ namespace Pulumi.Awsworkmail
             return merged;
         }
         /// <summary>
-        /// Get an existing Organization resource's state with the given name, ID, and optional extra
+        /// Get an existing DefaultDomain resource's state with the given name, ID, and optional extra
         /// properties used to qualify the lookup.
         /// </summary>
         ///
         /// <param name="name">The unique name of the resulting resource.</param>
         /// <param name="id">The unique provider ID of the resource to lookup.</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
-        public static Organization Get(string name, Input<string> id, CustomResourceOptions? options = null)
+        public static DefaultDomain Get(string name, Input<string> id, CustomResourceOptions? options = null)
         {
-            return new Organization(name, id, options);
+            return new DefaultDomain(name, id, options);
         }
     }
 
-    public sealed class OrganizationArgs : global::Pulumi.ResourceArgs
+    public sealed class DefaultDomainArgs : global::Pulumi.ResourceArgs
     {
-        [Input("alias", required: true)]
-        public Input<string> Alias { get; set; } = null!;
-
         [Input("clientToken")]
         public Input<string>? ClientToken { get; set; }
 
-        [Input("directoryId")]
-        public Input<string>? DirectoryId { get; set; }
+        [Input("domainName", required: true)]
+        public Input<string> DomainName { get; set; } = null!;
 
-        [Input("enableInteroperability")]
-        public Input<bool>? EnableInteroperability { get; set; }
-
-        [Input("kmsKeyArn")]
-        public Input<string>? KmsKeyArn { get; set; }
+        [Input("organizationId", required: true)]
+        public Input<string> OrganizationId { get; set; } = null!;
 
         [Input("region", required: true)]
         public Input<string> Region { get; set; } = null!;
 
-        public OrganizationArgs()
+        public DefaultDomainArgs()
         {
         }
-        public static new OrganizationArgs Empty => new OrganizationArgs();
+        public static new DefaultDomainArgs Empty => new DefaultDomainArgs();
     }
 }

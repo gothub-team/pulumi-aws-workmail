@@ -8,7 +8,6 @@ import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
-from . import outputs
 
 __all__ = ['OrganizationArgs', 'Organization']
 
@@ -16,8 +15,6 @@ __all__ = ['OrganizationArgs', 'Organization']
 class OrganizationArgs:
     def __init__(__self__, *,
                  alias: pulumi.Input[str],
-                 domain_name: pulumi.Input[str],
-                 hosted_zone_id: pulumi.Input[str],
                  region: pulumi.Input[str],
                  client_token: Optional[pulumi.Input[str]] = None,
                  directory_id: Optional[pulumi.Input[str]] = None,
@@ -27,8 +24,6 @@ class OrganizationArgs:
         The set of arguments for constructing a Organization resource.
         """
         pulumi.set(__self__, "alias", alias)
-        pulumi.set(__self__, "domain_name", domain_name)
-        pulumi.set(__self__, "hosted_zone_id", hosted_zone_id)
         pulumi.set(__self__, "region", region)
         if client_token is not None:
             pulumi.set(__self__, "client_token", client_token)
@@ -47,24 +42,6 @@ class OrganizationArgs:
     @alias.setter
     def alias(self, value: pulumi.Input[str]):
         pulumi.set(self, "alias", value)
-
-    @property
-    @pulumi.getter(name="domainName")
-    def domain_name(self) -> pulumi.Input[str]:
-        return pulumi.get(self, "domain_name")
-
-    @domain_name.setter
-    def domain_name(self, value: pulumi.Input[str]):
-        pulumi.set(self, "domain_name", value)
-
-    @property
-    @pulumi.getter(name="hostedZoneId")
-    def hosted_zone_id(self) -> pulumi.Input[str]:
-        return pulumi.get(self, "hosted_zone_id")
-
-    @hosted_zone_id.setter
-    def hosted_zone_id(self, value: pulumi.Input[str]):
-        pulumi.set(self, "hosted_zone_id", value)
 
     @property
     @pulumi.getter
@@ -120,9 +97,7 @@ class Organization(pulumi.CustomResource):
                  alias: Optional[pulumi.Input[str]] = None,
                  client_token: Optional[pulumi.Input[str]] = None,
                  directory_id: Optional[pulumi.Input[str]] = None,
-                 domain_name: Optional[pulumi.Input[str]] = None,
                  enable_interoperability: Optional[pulumi.Input[bool]] = None,
-                 hosted_zone_id: Optional[pulumi.Input[str]] = None,
                  kms_key_arn: Optional[pulumi.Input[str]] = None,
                  region: Optional[pulumi.Input[str]] = None,
                  __props__=None):
@@ -157,9 +132,7 @@ class Organization(pulumi.CustomResource):
                  alias: Optional[pulumi.Input[str]] = None,
                  client_token: Optional[pulumi.Input[str]] = None,
                  directory_id: Optional[pulumi.Input[str]] = None,
-                 domain_name: Optional[pulumi.Input[str]] = None,
                  enable_interoperability: Optional[pulumi.Input[bool]] = None,
-                 hosted_zone_id: Optional[pulumi.Input[str]] = None,
                  kms_key_arn: Optional[pulumi.Input[str]] = None,
                  region: Optional[pulumi.Input[str]] = None,
                  __props__=None):
@@ -176,19 +149,12 @@ class Organization(pulumi.CustomResource):
             __props__.__dict__["alias"] = alias
             __props__.__dict__["client_token"] = client_token
             __props__.__dict__["directory_id"] = directory_id
-            if domain_name is None and not opts.urn:
-                raise TypeError("Missing required property 'domain_name'")
-            __props__.__dict__["domain_name"] = domain_name
             __props__.__dict__["enable_interoperability"] = enable_interoperability
-            if hosted_zone_id is None and not opts.urn:
-                raise TypeError("Missing required property 'hosted_zone_id'")
-            __props__.__dict__["hosted_zone_id"] = hosted_zone_id
             __props__.__dict__["kms_key_arn"] = kms_key_arn
             if region is None and not opts.urn:
                 raise TypeError("Missing required property 'region'")
             __props__.__dict__["region"] = region
             __props__.__dict__["organization_id"] = None
-            __props__.__dict__["records"] = None
         super(Organization, __self__).__init__(
             'awsworkmail:index:Organization',
             resource_name,
@@ -214,12 +180,9 @@ class Organization(pulumi.CustomResource):
         __props__.__dict__["alias"] = None
         __props__.__dict__["client_token"] = None
         __props__.__dict__["directory_id"] = None
-        __props__.__dict__["domain_name"] = None
         __props__.__dict__["enable_interoperability"] = None
-        __props__.__dict__["hosted_zone_id"] = None
         __props__.__dict__["kms_key_arn"] = None
         __props__.__dict__["organization_id"] = None
-        __props__.__dict__["records"] = None
         __props__.__dict__["region"] = None
         return Organization(resource_name, opts=opts, __props__=__props__)
 
@@ -239,19 +202,9 @@ class Organization(pulumi.CustomResource):
         return pulumi.get(self, "directory_id")
 
     @property
-    @pulumi.getter(name="domainName")
-    def domain_name(self) -> pulumi.Output[str]:
-        return pulumi.get(self, "domain_name")
-
-    @property
     @pulumi.getter(name="enableInteroperability")
     def enable_interoperability(self) -> pulumi.Output[Optional[bool]]:
         return pulumi.get(self, "enable_interoperability")
-
-    @property
-    @pulumi.getter(name="hostedZoneId")
-    def hosted_zone_id(self) -> pulumi.Output[str]:
-        return pulumi.get(self, "hosted_zone_id")
 
     @property
     @pulumi.getter(name="kmsKeyArn")
@@ -262,11 +215,6 @@ class Organization(pulumi.CustomResource):
     @pulumi.getter(name="organizationId")
     def organization_id(self) -> pulumi.Output[str]:
         return pulumi.get(self, "organization_id")
-
-    @property
-    @pulumi.getter
-    def records(self) -> pulumi.Output[Sequence['outputs.DnsRecord']]:
-        return pulumi.get(self, "records")
 
     @property
     @pulumi.getter
