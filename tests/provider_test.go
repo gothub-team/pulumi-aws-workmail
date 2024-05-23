@@ -79,7 +79,7 @@ func TestOrganization(t *testing.T) {
 			So(err, ShouldBeNil)
 			So(domain.Properties["records"].ArrayValue(), ShouldHaveLength, 8)
 
-			SkipConvey("When deleting the default domain", func() {
+			Convey("When deleting the default domain", func() {
 				err := prov.Delete(p.DeleteRequest{
 					Urn:        urn("DefaultDomain"),
 					Properties: domain.Properties,
