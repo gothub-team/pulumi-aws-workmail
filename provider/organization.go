@@ -1,9 +1,11 @@
 package provider
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/ses"
 	"github.com/aws/aws-sdk-go-v2/service/workmail"
 	"github.com/aws/aws-sdk-go-v2/service/workmail/types"
 	p "github.com/pulumi/pulumi-go-provider"
@@ -74,6 +76,7 @@ func (Organization) Create(ctx p.Context, name string, input OrganizationArgs, p
 
 	// Create the WorkMail service client using the config
 	workmailclient := workmail.NewFromConfig(cfg)
+	sesclient := ses.NewFromConfig(cfg)
 
 	// Create the organization
 	organization, err := workmailclient.CreateOrganization(ctx, &workmail.CreateOrganizationInput{
@@ -92,23 +95,31 @@ func (Organization) Create(ctx p.Context, name string, input OrganizationArgs, p
 	if err != nil {
 		return "", state, err
 	}
+	state.OrganizationId = *organization.OrganizationId
 
 	// Wait for the organization to be created
 	for {
 		org, err := workmailclient.DescribeOrganization(ctx, &workmail.DescribeOrganizationInput{
-			OrganizationId: organization.OrganizationId,
+			OrganizationId: &state.OrganizationId,
 		})
 		if err != nil {
 			return "", state, err
 		}
-		if *org.State == "Active" {
+		ses, err := sesclient.GetIdentityVerificationAttributes(ctx, &ses.GetIdentityVerificationAttributesInput{
+			Identities: []string{input.DomainName},
+		})
+		if err != nil {
+			return "", state, err
+		}
+		fmt.Println(*org.State, ses.VerificationAttributes[input.DomainName].VerificationStatus)
+		if *org.State == "Active" && ses.VerificationAttributes[input.DomainName].VerificationStatus == "Success" {
 			break
 		}
 		time.Sleep(5 * time.Second)
 	}
 
 	_, err = workmailclient.UpdateDefaultMailDomain(ctx, &workmail.UpdateDefaultMailDomainInput{
-		OrganizationId: organization.OrganizationId,
+		OrganizationId: &state.OrganizationId,
 		DomainName:     &input.DomainName,
 	})
 	if err != nil {
@@ -116,14 +127,13 @@ func (Organization) Create(ctx p.Context, name string, input OrganizationArgs, p
 	}
 
 	mailDomain, err := workmailclient.GetMailDomain(ctx, &workmail.GetMailDomainInput{
-		OrganizationId: organization.OrganizationId,
+		OrganizationId: &state.OrganizationId,
 		DomainName:     &input.DomainName,
 	})
 	if err != nil {
 		return "", state, err
 	}
 
-	state.OrganizationId = *organization.OrganizationId
 	state.Records = Map(func(record types.DnsRecord) DnsRecord {
 		return DnsRecord{
 			Type:     *record.Type,
@@ -132,7 +142,7 @@ func (Organization) Create(ctx p.Context, name string, input OrganizationArgs, p
 		}
 	})(mailDomain.Records)
 
-	return "*organization.OrganizationId", state, nil
+	return state.OrganizationId, state, nil
 }
 
 func ifNotNil[T any](ptr *T, def T) T {

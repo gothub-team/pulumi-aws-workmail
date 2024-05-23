@@ -44,6 +44,34 @@ func TestRandomCreate(t *testing.T) {
 	assert.Len(t, result, 12)
 }
 
+func TestOrganizationCreateDelete(t *testing.T) {
+	prov := provider()
+
+	err := prov.Delete(p.DeleteRequest{
+		Urn: urn("Organization"),
+		Properties: resource.PropertyMap{
+			"organizationId": resource.NewStringProperty("m-9300c47ab20d4182ab1c4c3ebb8d358b"),
+		}})
+	require.NoError(t, err)
+
+	// response, err := prov.Create(p.CreateRequest{
+	// 	Urn: urn("Organization"),
+	// 	Properties: resource.PropertyMap{
+	// 		"region":       resource.NewStringProperty("eu-west-1"),
+	// 		"alias":        resource.NewStringProperty("test-devgothubio"),
+	// 		"domainName":   resource.NewStringProperty("dev.gothub.io"),
+	// 		"hostedZoneId": resource.NewStringProperty("Z0690737HWV9262JDHN4"),
+	// 	},
+	// 	Preview: false,
+	// })
+
+	// response.Properties["organizationId"].StringValue()
+
+	// require.NoError(t, err)
+	// result := response.Properties["organizationId"].StringValue()
+	// assert.NotEmpty(t, result)
+}
+
 // urn is a helper function to build an urn for running integration tests.
 func urn(typ string) resource.URN {
 	return resource.NewURN("stack", "proj", "",
