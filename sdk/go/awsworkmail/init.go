@@ -27,6 +27,10 @@ func (m *module) Construct(ctx *pulumi.Context, name, typ, urn string) (r pulumi
 		r = &Organization{}
 	case "awsworkmail:index:Random":
 		r = &Random{}
+	case "awsworkmail:index:User":
+		r = &User{}
+	case "awsworkmail:index:WorkmailRegistration":
+		r = &WorkmailRegistration{}
 	default:
 		return nil, fmt.Errorf("unknown resource type: %s", typ)
 	}

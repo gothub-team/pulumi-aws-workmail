@@ -25,6 +25,16 @@ export type Random = import("./random").Random;
 export const Random: typeof import("./random").Random = null as any;
 utilities.lazyLoad(exports, ["Random"], () => require("./random"));
 
+export { UserArgs } from "./user";
+export type User = import("./user").User;
+export const User: typeof import("./user").User = null as any;
+utilities.lazyLoad(exports, ["User"], () => require("./user"));
+
+export { WorkmailRegistrationArgs } from "./workmailRegistration";
+export type WorkmailRegistration = import("./workmailRegistration").WorkmailRegistration;
+export const WorkmailRegistration: typeof import("./workmailRegistration").WorkmailRegistration = null as any;
+utilities.lazyLoad(exports, ["WorkmailRegistration"], () => require("./workmailRegistration"));
+
 
 // Export sub-modules:
 import * as types from "./types";
@@ -43,6 +53,10 @@ const _module = {
                 return new Organization(name, <any>undefined, { urn })
             case "awsworkmail:index:Random":
                 return new Random(name, <any>undefined, { urn })
+            case "awsworkmail:index:User":
+                return new User(name, <any>undefined, { urn })
+            case "awsworkmail:index:WorkmailRegistration":
+                return new WorkmailRegistration(name, <any>undefined, { urn })
             default:
                 throw new Error(`unknown resource type ${type}`);
         }

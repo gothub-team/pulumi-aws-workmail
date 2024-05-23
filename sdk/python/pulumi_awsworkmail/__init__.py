@@ -9,6 +9,8 @@ from .default_domain import *
 from .organization import *
 from .provider import *
 from .random import *
+from .user import *
+from .workmail_registration import *
 from . import outputs
 _utilities.register(
     resource_modules="""
@@ -20,7 +22,9 @@ _utilities.register(
   "classes": {
    "awsworkmail:index:DefaultDomain": "DefaultDomain",
    "awsworkmail:index:Organization": "Organization",
-   "awsworkmail:index:Random": "Random"
+   "awsworkmail:index:Random": "Random",
+   "awsworkmail:index:User": "User",
+   "awsworkmail:index:WorkmailRegistration": "WorkmailRegistration"
   }
  }
 ]
