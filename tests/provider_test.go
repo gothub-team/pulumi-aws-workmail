@@ -28,52 +28,56 @@ import (
 )
 
 func TestRandomCreate(t *testing.T) {
-	Convey("Given a provider", t, func() {
-		prov := provider()
+	prov := provider()
+	Convey("Given a length", t, func() {
+		length := 12
 
-		response, err := prov.Create(p.CreateRequest{
-			Urn: urn("Random"),
-			Properties: resource.PropertyMap{
-				"length": resource.NewNumberProperty(12),
-			},
-			Preview: false,
+		Convey("When creating a random string", func() {
+			response, err := prov.Create(p.CreateRequest{
+				Urn: urn("Random"),
+				Properties: resource.PropertyMap{
+					"length": resource.NewNumberProperty(float64(length)),
+				},
+				Preview: false,
+			})
+
+			So(err, ShouldBeNil)
+
+			result := response.Properties["result"].StringValue()
+			So(result, ShouldHaveLength, 12)
 		})
-
-		So(err, ShouldBeNil)
-
-		result := response.Properties["result"].StringValue()
-		So(result, ShouldHaveLength, 12)
 	})
 }
 
 func TestOrganization(t *testing.T) {
-	Convey("Given a provider", t, func() {
-		prov := provider()
+	prov := provider()
+	Convey("Given a domain", t, func() {
+		domain := "dev.gothub.io"
 
-		err := prov.Delete(p.DeleteRequest{
-			Urn: urn("Organization"),
-			Properties: resource.PropertyMap{
-				"organizationId": resource.NewStringProperty("m-9300c47ab20d4182ab1c4c3ebb8d358b"),
-			}})
+		Convey("When creating an organization", func() {
+			response, err := prov.Create(p.CreateRequest{
+				Urn: urn("Organization"),
+				Properties: resource.PropertyMap{
+					"region":       resource.NewStringProperty("eu-west-1"),
+					"alias":        resource.NewStringProperty("test-devgothubio"),
+					"domainName":   resource.NewStringProperty(domain),
+					"hostedZoneId": resource.NewStringProperty("Z0690737HWV9262JDHN4"),
+				},
+				Preview: false,
+			})
 
-		So(err, ShouldBeNil)
+			So(err, ShouldBeNil)
 
-		// response, err := prov.Create(p.CreateRequest{
-		// 	Urn: urn("Organization"),
-		// 	Properties: resource.PropertyMap{
-		// 		"region":       resource.NewStringProperty("eu-west-1"),
-		// 		"alias":        resource.NewStringProperty("test-devgothubio"),
-		// 		"domainName":   resource.NewStringProperty("dev.gothub.io"),
-		// 		"hostedZoneId": resource.NewStringProperty("Z0690737HWV9262JDHN4"),
-		// 	},
-		// 	Preview: false,
-		// })
+			Convey("When deleting the organization", func() {
+				err := prov.Delete(p.DeleteRequest{
+					Urn:        urn("Organization"),
+					Properties: response.Properties,
+					ID:         response.ID,
+				})
 
-		// response.Properties["organizationId"].StringValue()
-
-		// require.NoError(t, err)
-		// result := response.Properties["organizationId"].StringValue()
-		// assert.NotEmpty(t, result)
+				So(err, ShouldBeNil)
+			})
+		})
 	})
 }
 

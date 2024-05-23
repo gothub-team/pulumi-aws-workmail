@@ -105,14 +105,15 @@ func (Organization) Create(ctx p.Context, name string, input OrganizationArgs, p
 		if err != nil {
 			return "", state, err
 		}
-		ses, err := sesclient.GetIdentityVerificationAttributes(ctx, &ses.GetIdentityVerificationAttributesInput{
+
+		identityVerification, err := sesclient.GetIdentityVerificationAttributes(ctx, &ses.GetIdentityVerificationAttributesInput{
 			Identities: []string{input.DomainName},
 		})
 		if err != nil {
 			return "", state, err
 		}
-		fmt.Println(*org.State, ses.VerificationAttributes[input.DomainName].VerificationStatus)
-		if *org.State == "Active" && ses.VerificationAttributes[input.DomainName].VerificationStatus == "Success" {
+		fmt.Println(*org.State, identityVerification.VerificationAttributes[input.DomainName].VerificationStatus)
+		if *org.State == "Active" && identityVerification.VerificationAttributes[input.DomainName].VerificationStatus == "Success" {
 			break
 		}
 		time.Sleep(5 * time.Second)
@@ -162,21 +163,44 @@ func (Organization) Delete(ctx p.Context, id string, props OrganizationState) er
 
 	// Create the WorkMail service client using the config
 	workmailclient := workmail.NewFromConfig(cfg)
+	sesclient := ses.NewFromConfig(cfg)
 
 	organization, err := workmailclient.DescribeOrganization(ctx, &workmail.DescribeOrganizationInput{
-		OrganizationId: &props.OrganizationId,
+		OrganizationId: &id,
 	})
 	if err != nil {
 		return nil
 	}
+
 	if *organization.State != "Deleted" {
 		// Delete the organization
 		_, err = workmailclient.DeleteOrganization(ctx, &workmail.DeleteOrganizationInput{
-			OrganizationId:  &props.OrganizationId,
+			OrganizationId:  &id,
 			DeleteDirectory: true,
 			ForceDelete:     true,
 		})
+		if err != nil {
+			return err
+		}
+
+		for {
+			organization, err := workmailclient.DescribeOrganization(ctx, &workmail.DescribeOrganizationInput{
+				OrganizationId: &id,
+			})
+			if err != nil {
+				return err
+			}
+			if *organization.State == "Deleted" {
+				break
+			}
+			time.Sleep(5 * time.Second)
+		}
 	}
+
+	_, err = sesclient.DeleteIdentity(ctx, &ses.DeleteIdentityInput{
+		Identity: &props.DomainName,
+	})
+
 	return err
 }
 
