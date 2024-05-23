@@ -22,54 +22,59 @@ import (
 	"github.com/pulumi/pulumi-go-provider/integration"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
+	. "github.com/smartystreets/goconvey/convey"
 
 	awsworkmail "github.com/gothub-team/pulumi-awsworkmail/provider"
 )
 
 func TestRandomCreate(t *testing.T) {
-	prov := provider()
+	Convey("Given a provider", t, func() {
+		prov := provider()
 
-	response, err := prov.Create(p.CreateRequest{
-		Urn: urn("Random"),
-		Properties: resource.PropertyMap{
-			"length": resource.NewNumberProperty(12),
-		},
-		Preview: false,
+		response, err := prov.Create(p.CreateRequest{
+			Urn: urn("Random"),
+			Properties: resource.PropertyMap{
+				"length": resource.NewNumberProperty(12),
+			},
+			Preview: false,
+		})
+
+		So(err, ShouldBeNil)
+
+		result := response.Properties["result"].StringValue()
+		So(result, ShouldHaveLength, 12)
 	})
-
-	require.NoError(t, err)
-	result := response.Properties["result"].StringValue()
-	assert.Len(t, result, 12)
 }
 
-func TestOrganizationCreateDelete(t *testing.T) {
-	prov := provider()
+func TestOrganization(t *testing.T) {
+	Convey("Given a provider", t, func() {
+		prov := provider()
 
-	err := prov.Delete(p.DeleteRequest{
-		Urn: urn("Organization"),
-		Properties: resource.PropertyMap{
-			"organizationId": resource.NewStringProperty("m-9300c47ab20d4182ab1c4c3ebb8d358b"),
-		}})
-	require.NoError(t, err)
+		err := prov.Delete(p.DeleteRequest{
+			Urn: urn("Organization"),
+			Properties: resource.PropertyMap{
+				"organizationId": resource.NewStringProperty("m-9300c47ab20d4182ab1c4c3ebb8d358b"),
+			}})
 
-	// response, err := prov.Create(p.CreateRequest{
-	// 	Urn: urn("Organization"),
-	// 	Properties: resource.PropertyMap{
-	// 		"region":       resource.NewStringProperty("eu-west-1"),
-	// 		"alias":        resource.NewStringProperty("test-devgothubio"),
-	// 		"domainName":   resource.NewStringProperty("dev.gothub.io"),
-	// 		"hostedZoneId": resource.NewStringProperty("Z0690737HWV9262JDHN4"),
-	// 	},
-	// 	Preview: false,
-	// })
+		So(err, ShouldBeNil)
 
-	// response.Properties["organizationId"].StringValue()
+		// response, err := prov.Create(p.CreateRequest{
+		// 	Urn: urn("Organization"),
+		// 	Properties: resource.PropertyMap{
+		// 		"region":       resource.NewStringProperty("eu-west-1"),
+		// 		"alias":        resource.NewStringProperty("test-devgothubio"),
+		// 		"domainName":   resource.NewStringProperty("dev.gothub.io"),
+		// 		"hostedZoneId": resource.NewStringProperty("Z0690737HWV9262JDHN4"),
+		// 	},
+		// 	Preview: false,
+		// })
 
-	// require.NoError(t, err)
-	// result := response.Properties["organizationId"].StringValue()
-	// assert.NotEmpty(t, result)
+		// response.Properties["organizationId"].StringValue()
+
+		// require.NoError(t, err)
+		// result := response.Properties["organizationId"].StringValue()
+		// assert.NotEmpty(t, result)
+	})
 }
 
 // urn is a helper function to build an urn for running integration tests.
