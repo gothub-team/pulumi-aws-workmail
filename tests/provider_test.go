@@ -15,6 +15,7 @@
 package tests
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/blang/semver"
@@ -107,10 +108,11 @@ func TestUser(t *testing.T) {
 		user, err := prov.Create(p.CreateRequest{
 			Urn: urn("User"),
 			Properties: resource.PropertyMap{
-				"region":   resource.NewStringProperty("eu-west-1"),
-				"domain":   resource.NewStringProperty("dev.gothub.io"),
-				"username": resource.NewStringProperty("info"),
-				"password": resource.NewStringProperty("test-password"),
+				"region":      resource.NewStringProperty("eu-west-1"),
+				"domain":      resource.NewStringProperty("dev.gothub.io"),
+				"displayName": resource.NewStringProperty("Info"),
+				"name":        resource.NewStringProperty("Info"),
+				"password":    resource.NewStringProperty("test-password-1234"),
 			},
 			Preview: false,
 		})
@@ -118,11 +120,89 @@ func TestUser(t *testing.T) {
 		So(err, ShouldBeNil)
 		So(user.Properties["userId"].StringValue(), ShouldNotBeEmpty)
 
+		fmt.Println(user.Properties["userId"].StringValue(), user.Properties["organizationId"].StringValue())
+
+		Convey("When updating the user's primary email address", func() {
+			primaryEmailAddress, err := prov.Create(p.CreateRequest{
+				Urn: urn("WorkmailRegistration"),
+				Properties: resource.PropertyMap{
+					"region":         resource.NewStringProperty("eu-west-1"),
+					"organizationId": user.Properties["organizationId"],
+					"entityId":       user.Properties["userId"],
+					"emailPrefix":    resource.NewStringProperty("info"),
+				}, Preview: false})
+
+			So(err, ShouldBeNil)
+			So(primaryEmailAddress.ID, ShouldEqual, user.ID)
+		})
+
 		// err = prov.Delete(p.DeleteRequest{
 		// 	Urn:        urn("User"),
 		// 	Properties: user.Properties,
 		// 	ID:         user.ID,
 		// })
+
+		So(err, ShouldBeNil)
+	})
+}
+
+func TestDeleteUser(t *testing.T) {
+	prov := provider()
+
+	Convey("When deleting a mail user", t, func() {
+		userId := "USER_ID"
+		err := prov.Delete(p.DeleteRequest{
+			Urn: urn("User"),
+			Properties: resource.PropertyMap{
+				"region":         resource.NewStringProperty("eu-west-1"),
+				"userId":         resource.NewStringProperty(userId),
+				"organizationId": resource.NewStringProperty("ORGANIZATION_ID"),
+				"displayName":    resource.NewStringProperty("Info"),
+				"name":           resource.NewStringProperty("Info"),
+			},
+			ID: userId,
+		})
+
+		So(err, ShouldBeNil)
+	})
+}
+
+func TestCreateWorkmailRegistration(t *testing.T) {
+	prov := provider()
+
+	Convey("When creating a workmail registration", t, func() {
+		userId := "USER_ID"
+		workmailRegistration, err := prov.Create(p.CreateRequest{
+			Urn: urn("WorkmailRegistration"),
+			Properties: resource.PropertyMap{
+				"region":         resource.NewStringProperty("eu-west-1"),
+				"entityId":       resource.NewStringProperty(userId),
+				"organizationId": resource.NewStringProperty("ORGANIZATION_ID"),
+				"emailPrefix":    resource.NewStringProperty("info"),
+			},
+			Preview: false,
+		})
+
+		So(err, ShouldBeNil)
+		So(workmailRegistration.Properties["entityId"].StringValue(), ShouldNotBeEmpty)
+	})
+}
+
+func TestDeleteWorkmailRegistration(t *testing.T) {
+	prov := provider()
+
+	Convey("When deleting a workmail registration", t, func() {
+		userId := "USER_ID"
+		err := prov.Delete(p.DeleteRequest{
+			Urn: urn("WorkmailRegistration"),
+			Properties: resource.PropertyMap{
+				"region":         resource.NewStringProperty("eu-west-1"),
+				"entityId":       resource.NewStringProperty(userId),
+				"organizationId": resource.NewStringProperty("ORGANIZATION_ID"),
+				"emailPrefix":    resource.NewStringProperty("info"),
+			},
+			ID: userId,
+		})
 
 		So(err, ShouldBeNil)
 	})
