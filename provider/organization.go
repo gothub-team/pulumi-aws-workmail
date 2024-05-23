@@ -1,11 +1,9 @@
 package provider
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/aws/aws-sdk-go-v2/service/ses"
 	"github.com/aws/aws-sdk-go-v2/service/workmail"
 	"github.com/aws/aws-sdk-go-v2/service/workmail/types"
 	p "github.com/pulumi/pulumi-go-provider"
@@ -29,10 +27,6 @@ type OrganizationArgs struct {
 	Region string `pulumi:"region"`
 	// The organization alias.
 	Alias string `pulumi:"alias"`
-	// The domain name.
-	DomainName string `pulumi:"domainName"`
-	// The hosted zone id for the domain.
-	HostedZoneId string `pulumi:"hostedZoneId"`
 	// The idempotency token associated with the request.
 	ClientToken *string `pulumi:"clientToken,optional"`
 	// The AWS Directory Service directory ID.
@@ -50,15 +44,6 @@ type OrganizationState struct {
 
 	// The organization id.
 	OrganizationId string `pulumi:"organizationId"`
-
-	// Mail domain records.
-	Records []DnsRecord `pulumi:"records"`
-}
-
-type DnsRecord struct {
-	Type     string `pulumi:"type"`
-	Hostname string `pulumi:"hostname"`
-	Value    string `pulumi:"value"`
 }
 
 // All resources must implement Create at a minimum.
@@ -76,17 +61,11 @@ func (Organization) Create(ctx p.Context, name string, input OrganizationArgs, p
 
 	// Create the WorkMail service client using the config
 	workmailclient := workmail.NewFromConfig(cfg)
-	sesclient := ses.NewFromConfig(cfg)
 
 	// Create the organization
 	organization, err := workmailclient.CreateOrganization(ctx, &workmail.CreateOrganizationInput{
-		Alias: &input.Alias,
-		Domains: []types.Domain{
-			{
-				DomainName:   &input.DomainName,
-				HostedZoneId: &input.HostedZoneId,
-			},
-		},
+		Alias:                  &input.Alias,
+		Domains:                []types.Domain{},
 		ClientToken:            input.ClientToken,
 		DirectoryId:            input.DirectoryId,
 		KmsKeyArn:              input.KmsKeyArn,
@@ -106,42 +85,11 @@ func (Organization) Create(ctx p.Context, name string, input OrganizationArgs, p
 			return "", state, err
 		}
 
-		identityVerification, err := sesclient.GetIdentityVerificationAttributes(ctx, &ses.GetIdentityVerificationAttributesInput{
-			Identities: []string{input.DomainName},
-		})
-		if err != nil {
-			return "", state, err
-		}
-		fmt.Println(*org.State, identityVerification.VerificationAttributes[input.DomainName].VerificationStatus)
-		if *org.State == "Active" && identityVerification.VerificationAttributes[input.DomainName].VerificationStatus == "Success" {
+		if *org.State == "Active" {
 			break
 		}
 		time.Sleep(5 * time.Second)
 	}
-
-	_, err = workmailclient.UpdateDefaultMailDomain(ctx, &workmail.UpdateDefaultMailDomainInput{
-		OrganizationId: &state.OrganizationId,
-		DomainName:     &input.DomainName,
-	})
-	if err != nil {
-		return "", state, err
-	}
-
-	mailDomain, err := workmailclient.GetMailDomain(ctx, &workmail.GetMailDomainInput{
-		OrganizationId: &state.OrganizationId,
-		DomainName:     &input.DomainName,
-	})
-	if err != nil {
-		return "", state, err
-	}
-
-	state.Records = Map(func(record types.DnsRecord) DnsRecord {
-		return DnsRecord{
-			Type:     *record.Type,
-			Hostname: *record.Hostname,
-			Value:    *record.Value,
-		}
-	})(mailDomain.Records)
 
 	return state.OrganizationId, state, nil
 }
@@ -163,7 +111,6 @@ func (Organization) Delete(ctx p.Context, id string, props OrganizationState) er
 
 	// Create the WorkMail service client using the config
 	workmailclient := workmail.NewFromConfig(cfg)
-	sesclient := ses.NewFromConfig(cfg)
 
 	organization, err := workmailclient.DescribeOrganization(ctx, &workmail.DescribeOrganizationInput{
 		OrganizationId: &id,
@@ -196,10 +143,6 @@ func (Organization) Delete(ctx p.Context, id string, props OrganizationState) er
 			time.Sleep(5 * time.Second)
 		}
 	}
-
-	_, err = sesclient.DeleteIdentity(ctx, &ses.DeleteIdentityInput{
-		Identity: &props.DomainName,
-	})
 
 	return err
 }

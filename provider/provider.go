@@ -37,6 +37,7 @@ func Provider() p.Provider {
 	return infer.Provider(infer.Options{
 		Resources: []infer.InferredResource{
 			infer.Resource[Organization, OrganizationArgs, OrganizationState](),
+			infer.Resource[DefaultDomain, DefaultDomainArgs, DefaultDomainState](),
 			infer.Resource[Random, RandomArgs, RandomState](),
 		},
 		ModuleMap: map[tokens.ModuleName]tokens.ModuleName{

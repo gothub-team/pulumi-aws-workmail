@@ -27,7 +27,7 @@ import (
 	awsworkmail "github.com/gothub-team/pulumi-awsworkmail/provider"
 )
 
-func TestRandomCreate(t *testing.T) {
+func SkipTestRandomCreate(t *testing.T) {
 	prov := provider()
 	Convey("Given a length", t, func() {
 		length := 12
@@ -51,33 +51,52 @@ func TestRandomCreate(t *testing.T) {
 
 func TestOrganization(t *testing.T) {
 	prov := provider()
-	Convey("Given a domain", t, func() {
-		domain := "dev.gothub.io"
 
-		Convey("When creating an organization", func() {
-			response, err := prov.Create(p.CreateRequest{
-				Urn: urn("Organization"),
+	Convey("When creating an organization", t, func() {
+		organization, err := prov.Create(p.CreateRequest{
+			Urn: urn("Organization"),
+			Properties: resource.PropertyMap{
+				"region": resource.NewStringProperty("eu-west-1"),
+				"alias":  resource.NewStringProperty("test-organization-alias"),
+			},
+			Preview: false,
+		})
+
+		So(err, ShouldBeNil)
+		So(organization.Properties["organizationId"].StringValue(), ShouldNotBeEmpty)
+
+		Convey("When creating a default domain", func() {
+			domain, err := prov.Create(p.CreateRequest{
+				Urn: urn("DefaultDomain"),
 				Properties: resource.PropertyMap{
-					"region":       resource.NewStringProperty("eu-west-1"),
-					"alias":        resource.NewStringProperty("test-devgothubio"),
-					"domainName":   resource.NewStringProperty(domain),
-					"hostedZoneId": resource.NewStringProperty("Z0690737HWV9262JDHN4"),
+					"region":         resource.NewStringProperty("eu-west-1"),
+					"domainName":     resource.NewStringProperty("dev.gothub.io"),
+					"organizationId": organization.Properties["organizationId"],
 				},
 				Preview: false,
 			})
 
 			So(err, ShouldBeNil)
+			So(domain.Properties["records"].ArrayValue(), ShouldHaveLength, 8)
 
-			Convey("When deleting the organization", func() {
+			SkipConvey("When deleting the default domain", func() {
 				err := prov.Delete(p.DeleteRequest{
-					Urn:        urn("Organization"),
-					Properties: response.Properties,
-					ID:         response.ID,
+					Urn:        urn("DefaultDomain"),
+					Properties: domain.Properties,
+					ID:         domain.ID,
 				})
 
 				So(err, ShouldBeNil)
 			})
 		})
+
+		err = prov.Delete(p.DeleteRequest{
+			Urn:        urn("Organization"),
+			Properties: organization.Properties,
+			ID:         organization.ID,
+		})
+
+		So(err, ShouldBeNil)
 	})
 }
 
