@@ -32,10 +32,12 @@ type UserArgs struct {
 	// of 64. All others have a maximum length of 20.
 	Name string `pulumi:"name"`
 	// The identifier of the organization for which the user is created. Either
-	// organizationId or domain must be specified.
+	// organizationId or domain must be specified. When both are specified, organizationId
+	// is ignored.
 	OrganizationId *string `pulumi:"organizationId,optional"`
 	// The mail domain of the organization for which the user is created. Either
-	// organizationId or domain must be specified.
+	// organizationId or domain must be specified. When both are specified, organizationId
+	// is ignored.
 	Domain *string `pulumi:"domain,optional"`
 	// The first name of the new user.
 	FirstName *string `pulumi:"firstName,optional"`
@@ -94,7 +96,7 @@ func (User) Create(ctx p.Context, name string, input UserArgs, preview bool) (st
 	if input.OrganizationId == nil && input.Domain == nil {
 		return "", state, errors.New("either organizationId or domain must be specified")
 	}
-	if input.OrganizationId == nil {
+	if input.Domain != nil {
 		organizations, err := workmailclient.ListOrganizations(ctx, &workmail.ListOrganizationsInput{})
 		if err != nil {
 			return "", state, err
@@ -131,6 +133,107 @@ func (User) Create(ctx p.Context, name string, input UserArgs, preview bool) (st
 	state.UserId = *user.UserId
 
 	return *user.UserId, state, nil
+}
+
+func (User) Diff(ctx p.Context, id string, olds UserState, news UserArgs) (p.DiffResponse, error) {
+	diffs := make(map[string]p.PropertyDiff)
+	hasChanges := false
+
+	if news.OrganizationId == nil && news.Domain == nil {
+		return p.DiffResponse{}, errors.New("either organizationId or domain must be specified")
+	}
+
+	// Old has domain
+	//   New has domain
+	// no change or test equality of domain
+	if olds.Domain != nil && news.Domain != nil {
+		if *olds.Domain != *news.Domain {
+			diffs["domain"] = p.PropertyDiff{Kind: p.UpdateReplace, InputDiff: true}
+			hasChanges = true
+		}
+	}
+
+	// Old has domain
+	//   New has no domain
+	// change
+	if olds.Domain != nil && news.Domain == nil {
+		diffs["domain"] = p.PropertyDiff{Kind: p.DeleteReplace, InputDiff: true}
+		diffs["organizationId"] = p.PropertyDiff{Kind: p.AddReplace, InputDiff: true}
+		hasChanges = true
+	}
+
+	// Old has no domain
+	//   New has domain
+	// change
+	if olds.Domain == nil && news.Domain != nil {
+		diffs["domain"] = p.PropertyDiff{Kind: p.AddReplace, InputDiff: true}
+		diffs["organizationId"] = p.PropertyDiff{Kind: p.DeleteReplace, InputDiff: true}
+		hasChanges = true
+	}
+
+	// Old has no domain
+	//   New has no domain
+	// no change or test equality of organizationId
+	if olds.Domain == nil && news.Domain == nil {
+		if olds.OrganizationId != *news.OrganizationId {
+			diffs["organizationId"] = p.PropertyDiff{Kind: p.UpdateReplace, InputDiff: true}
+			hasChanges = true
+		}
+	}
+
+	//  Region
+	if ptrDiff(&olds.Region, &news.Region) {
+		diffs["region"] = p.PropertyDiff{Kind: p.UpdateReplace, InputDiff: true}
+		hasChanges = true
+	}
+
+	//  DisplayName
+	if ptrDiff(&olds.DisplayName, &news.DisplayName) {
+		diffs["displayName"] = p.PropertyDiff{Kind: p.Update, InputDiff: true}
+		hasChanges = true
+	}
+
+	//  Name
+	if ptrDiff(&olds.Name, &news.Name) {
+		diffs["name"] = p.PropertyDiff{Kind: p.Update, InputDiff: true}
+		hasChanges = true
+	}
+
+	//  FirstName
+	if ptrDiff(olds.FirstName, news.FirstName) {
+		diffs["firstName"] = p.PropertyDiff{Kind: p.Update, InputDiff: true}
+		hasChanges = true
+	}
+
+	//  HiddenFromGlobalAddressList
+	if ptrDiff(olds.HiddenFromGlobalAddressList, news.HiddenFromGlobalAddressList) {
+		diffs["hiddenFromGlobalAddressList"] = p.PropertyDiff{Kind: p.Update, InputDiff: true}
+		hasChanges = true
+	}
+
+	//  LastName
+	if ptrDiff(olds.LastName, news.LastName) {
+		diffs["lastName"] = p.PropertyDiff{Kind: p.Update, InputDiff: true}
+		hasChanges = true
+	}
+
+	//  Password
+	if ptrDiff(olds.Password, news.Password) {
+		diffs["password"] = p.PropertyDiff{Kind: p.Update, InputDiff: true}
+		hasChanges = true
+	}
+
+	return p.DiffResponse{HasChanges: hasChanges, DetailedDiff: diffs, DeleteBeforeReplace: true}, nil
+}
+
+func ptrDiff[T comparable](a, b *T) bool {
+	if a == nil && b == nil {
+		return false
+	}
+	if a == nil || b == nil {
+		return true
+	}
+	return *a != *b
 }
 
 // The Delete method will run when the resource is deleted.
