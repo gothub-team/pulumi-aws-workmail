@@ -253,16 +253,16 @@ func ptrDiff[T comparable](a, b *T) bool {
 // 	// Create the WorkMail service client using the config
 // 	workmailclient := workmail.NewFromConfig(cfg)
 
-// 	_, err = workmailclient.UpdateUser(ctx, &workmail.UpdateUserInput{
-// 		UserId:                      &id,
-// 		OrganizationId:              &olds.OrganizationId,
-// 		FirstName:                   props.FirstName,
-// 		LastName:                    props.LastName,
-// 		HiddenFromGlobalAddressList: props.HiddenFromGlobalAddressList,
-// 	})
-// 	if err != nil {
-// 		return state, err
-// 	}
+// 	// _, err = workmailclient.UpdateUser(ctx, &workmail.UpdateUserInput{
+// 	// 	UserId:                      &id,
+// 	// 	OrganizationId:              &olds.OrganizationId,
+// 	// 	FirstName:                   props.FirstName,
+// 	// 	LastName:                    props.LastName,
+// 	// 	HiddenFromGlobalAddressList: props.HiddenFromGlobalAddressList,
+// 	// })
+// 	// if err != nil {
+// 	// 	return state, err
+// 	// }
 
 // 	if ptrDiff(&olds.Password, &props.Password) {
 // 		_, err = workmailclient.ResetPassword(ctx, &workmail.ResetPasswordInput{
