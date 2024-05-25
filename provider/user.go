@@ -189,37 +189,37 @@ func (User) Diff(ctx p.Context, id string, olds UserState, news UserArgs) (p.Dif
 
 	//  DisplayName
 	if ptrDiff(&olds.DisplayName, &news.DisplayName) {
-		diffs["displayName"] = p.PropertyDiff{Kind: p.Update, InputDiff: true}
+		diffs["displayName"] = p.PropertyDiff{Kind: p.UpdateReplace, InputDiff: true}
 		hasChanges = true
 	}
 
 	//  Name
 	if ptrDiff(&olds.Name, &news.Name) {
-		diffs["name"] = p.PropertyDiff{Kind: p.Update, InputDiff: true}
+		diffs["name"] = p.PropertyDiff{Kind: p.UpdateReplace, InputDiff: true}
 		hasChanges = true
 	}
 
 	//  FirstName
 	if ptrDiff(olds.FirstName, news.FirstName) {
-		diffs["firstName"] = p.PropertyDiff{Kind: p.Update, InputDiff: true}
+		diffs["firstName"] = p.PropertyDiff{Kind: p.UpdateReplace, InputDiff: true}
 		hasChanges = true
 	}
 
 	//  HiddenFromGlobalAddressList
 	if ptrDiff(olds.HiddenFromGlobalAddressList, news.HiddenFromGlobalAddressList) {
-		diffs["hiddenFromGlobalAddressList"] = p.PropertyDiff{Kind: p.Update, InputDiff: true}
+		diffs["hiddenFromGlobalAddressList"] = p.PropertyDiff{Kind: p.UpdateReplace, InputDiff: true}
 		hasChanges = true
 	}
 
 	//  LastName
 	if ptrDiff(olds.LastName, news.LastName) {
-		diffs["lastName"] = p.PropertyDiff{Kind: p.Update, InputDiff: true}
+		diffs["lastName"] = p.PropertyDiff{Kind: p.UpdateReplace, InputDiff: true}
 		hasChanges = true
 	}
 
 	//  Password
 	if ptrDiff(olds.Password, news.Password) {
-		diffs["password"] = p.PropertyDiff{Kind: p.Update, InputDiff: true}
+		diffs["password"] = p.PropertyDiff{Kind: p.UpdateReplace, InputDiff: true}
 		hasChanges = true
 	}
 
@@ -235,6 +235,48 @@ func ptrDiff[T comparable](a, b *T) bool {
 	}
 	return *a != *b
 }
+
+// func (User) Update(ctx p.Context, id string, olds UserState, props UserArgs, preview bool) (UserState, error) {
+// 	state := UserState{UserArgs: props}
+
+// 	// If in preview, don't run the command.
+// 	if preview {
+// 		return state, nil
+// 	}
+
+// 	cfg, err := config.LoadDefaultConfig(ctx)
+// 	if err != nil {
+// 		return state, err
+// 	}
+// 	cfg.Region = props.Region
+
+// 	// Create the WorkMail service client using the config
+// 	workmailclient := workmail.NewFromConfig(cfg)
+
+// 	_, err = workmailclient.UpdateUser(ctx, &workmail.UpdateUserInput{
+// 		UserId:                      &id,
+// 		OrganizationId:              &olds.OrganizationId,
+// 		FirstName:                   props.FirstName,
+// 		LastName:                    props.LastName,
+// 		HiddenFromGlobalAddressList: props.HiddenFromGlobalAddressList,
+// 	})
+// 	if err != nil {
+// 		return state, err
+// 	}
+
+// 	if ptrDiff(&olds.Password, &props.Password) {
+// 		_, err = workmailclient.ResetPassword(ctx, &workmail.ResetPasswordInput{
+// 			OrganizationId: &olds.OrganizationId,
+// 			UserId:         &id,
+// 			Password:       props.Password,
+// 		})
+// 		if err != nil {
+// 			return state, err
+// 		}
+// 	}
+
+// 	return state, err
+// }
 
 // The Delete method will run when the resource is deleted.
 func (User) Delete(ctx p.Context, id string, props UserState) error {
