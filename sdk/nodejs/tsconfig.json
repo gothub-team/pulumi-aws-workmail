@@ -13,6 +13,7 @@
         "strict": true
     },
     "files": [
+        "cognitoEmailSender.ts",
         "defaultDomain.ts",
         "index.ts",
         "organization.ts",

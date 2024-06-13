@@ -5,6 +5,11 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
 // Export members:
+export { CognitoEmailSenderArgs } from "./cognitoEmailSender";
+export type CognitoEmailSender = import("./cognitoEmailSender").CognitoEmailSender;
+export const CognitoEmailSender: typeof import("./cognitoEmailSender").CognitoEmailSender = null as any;
+utilities.lazyLoad(exports, ["CognitoEmailSender"], () => require("./cognitoEmailSender"));
+
 export { DefaultDomainArgs } from "./defaultDomain";
 export type DefaultDomain = import("./defaultDomain").DefaultDomain;
 export const DefaultDomain: typeof import("./defaultDomain").DefaultDomain = null as any;
@@ -47,6 +52,8 @@ const _module = {
     version: utilities.getVersion(),
     construct: (name: string, type: string, urn: string): pulumi.Resource => {
         switch (type) {
+            case "awsworkmail:index:CognitoEmailSender":
+                return new CognitoEmailSender(name, <any>undefined, { urn })
             case "awsworkmail:index:DefaultDomain":
                 return new DefaultDomain(name, <any>undefined, { urn })
             case "awsworkmail:index:Organization":
