@@ -41,6 +41,7 @@ func Provider() p.Provider {
 			infer.Resource[User, UserArgs, UserState](),
 			infer.Resource[WorkmailRegistration, WorkmailRegistrationArgs, WorkmailRegistrationState](),
 			infer.Resource[Random, RandomArgs, RandomState](),
+			infer.Resource[CognitoEmailSender, CognitoEmailSenderArgs, CognitoEmailSenderState](),
 		},
 		ModuleMap: map[tokens.ModuleName]tokens.ModuleName{
 			"provider": "index",
