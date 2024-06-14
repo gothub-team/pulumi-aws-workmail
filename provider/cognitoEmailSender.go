@@ -73,7 +73,7 @@ func (CognitoEmailSender) Diff(ctx p.Context, id string, olds CognitoEmailSender
 	diffs := make(map[string]p.PropertyDiff)
 	hasChanges := false
 
-	if olds.LambdaArn != news.LambdaArn {
+	if true {
 		diffs["lambdaArn"] = p.PropertyDiff{Kind: p.UpdateReplace, InputDiff: true}
 		hasChanges = true
 	}
